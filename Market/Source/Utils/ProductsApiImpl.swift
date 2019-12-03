@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 import RxSwift
 import RxCocoa
 
@@ -26,5 +27,4 @@ class ProductsApiImpl: ProductsApi {
         let error = ProductsApiError.defaultError
         return .just(.failure(error))
     }
-    
 }

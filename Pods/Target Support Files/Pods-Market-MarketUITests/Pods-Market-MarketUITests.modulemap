@@ -1,4 +1,4 @@
-module Pods_Market_MarketUITests {
+framework module Pods_Market_MarketUITests {
   umbrella header "Pods-Market-MarketUITests-umbrella.h"
 
   export *

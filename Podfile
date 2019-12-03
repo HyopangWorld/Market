@@ -9,9 +9,15 @@ target 'Market' do
   # RxSwift + Dependencies
   pod 'RxSwift', '~> 5'
   pod 'RxCocoa', '~> 5'
+  pod 'RxOptional', '~> 4.1.0'    # optional을 걸러주는 기능
+  pod "RxAppState"                # app 실행 상태, view 상태 알림
+  pod 'RxDataSources', '~> 4.0'   # table 및 collection 데이터 소스
   
-  # Image + Animation + UI
-  pod 'SnapKit', '~> 4'
+  # UI
+  pod 'SnapKit', '~> 5.0.1'
+  
+  # Other Swift Utilities
+  pod 'Then', '~> 2.6.0'
   
   target 'MarketTests' do
     inherit! :search_paths

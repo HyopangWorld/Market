@@ -3,16 +3,17 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		54D6F49D9F8030F8D68BE51B /* libPods-Market.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E347EF759CF238FAFD466F78 /* libPods-Market.a */; };
-		55DA9D0C6051CFD2A227C41D /* libPods-MarketTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 226474BE0458A109FC8BF404 /* libPods-MarketTests.a */; };
-		7A35E4FC6330CE9D833F1336 /* libPods-Market-MarketUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8C7908DDA7A0676A4919C60 /* libPods-Market-MarketUITests.a */; };
+		2FB403DDBA78ADD8D6C0945C /* Pods_Market.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1FF8EE6AF329A2F6454C8D1 /* Pods_Market.framework */; };
+		377A80DCB10F616B75AB7222 /* Pods_MarketTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 348225517FF21A0C326CCC21 /* Pods_MarketTests.framework */; };
+		A1E4162819062CBCE242B89E /* Pods_Market_MarketUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5510448C2C3450A23466D5E /* Pods_Market_MarketUITests.framework */; };
+		DD4DD9F42396595E0036FB21 /* ProductListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4DD9F32396595E0036FB21 /* ProductListCell.swift */; };
 		DD5A0E872394F601007F222B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5A0E862394F601007F222B /* AppDelegate.swift */; };
 		DD5A0E892394F601007F222B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5A0E882394F601007F222B /* SceneDelegate.swift */; };
-		DD5A0E8B2394F601007F222B /* ProductListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5A0E8A2394F601007F222B /* ProductListController.swift */; };
+		DD5A0E8B2394F601007F222B /* ProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5A0E8A2394F601007F222B /* ProductListViewController.swift */; };
 		DD5A0E8E2394F601007F222B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD5A0E8C2394F601007F222B /* LaunchScreen.storyboard */; };
 		DD5A0E902394F602007F222B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD5A0E8F2394F602007F222B /* Assets.xcassets */; };
 		DD5A0E9E2394F603007F222B /* MarketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5A0E9D2394F603007F222B /* MarketTests.swift */; };
@@ -43,17 +44,18 @@
 
 /* Begin PBXFileReference section */
 		1A6B320429649BD36F453EF8 /* Pods-Market-MarketUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Market-MarketUITests.release.xcconfig"; path = "Target Support Files/Pods-Market-MarketUITests/Pods-Market-MarketUITests.release.xcconfig"; sourceTree = "<group>"; };
-		226474BE0458A109FC8BF404 /* libPods-MarketTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MarketTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		348225517FF21A0C326CCC21 /* Pods_MarketTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MarketTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69CE54384CDCA419D81AA631 /* Pods-Market-MarketUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Market-MarketUITests.debug.xcconfig"; path = "Target Support Files/Pods-Market-MarketUITests/Pods-Market-MarketUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		6D3E4331B6F291906AD3EBB2 /* Pods-MarketTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarketTests.debug.xcconfig"; path = "Target Support Files/Pods-MarketTests/Pods-MarketTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7905BAA5C6F01E2D29235915 /* Pods-Market.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Market.debug.xcconfig"; path = "Target Support Files/Pods-Market/Pods-Market.debug.xcconfig"; sourceTree = "<group>"; };
 		849C90D4554A75EE436271CD /* Pods-MarketTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarketTests.release.xcconfig"; path = "Target Support Files/Pods-MarketTests/Pods-MarketTests.release.xcconfig"; sourceTree = "<group>"; };
 		BED8C4B7AD0D52D2B22C4654 /* Pods-Market.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Market.release.xcconfig"; path = "Target Support Files/Pods-Market/Pods-Market.release.xcconfig"; sourceTree = "<group>"; };
-		D8C7908DDA7A0676A4919C60 /* libPods-Market-MarketUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Market-MarketUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1FF8EE6AF329A2F6454C8D1 /* Pods_Market.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Market.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD4DD9F32396595E0036FB21 /* ProductListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCell.swift; sourceTree = "<group>"; };
 		DD5A0E832394F601007F222B /* Market.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Market.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD5A0E862394F601007F222B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD5A0E882394F601007F222B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		DD5A0E8A2394F601007F222B /* ProductListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListController.swift; sourceTree = "<group>"; };
+		DD5A0E8A2394F601007F222B /* ProductListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewController.swift; sourceTree = "<group>"; };
 		DD5A0E8D2394F601007F222B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DD5A0E8F2394F602007F222B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DD5A0E942394F602007F222B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -68,7 +70,7 @@
 		DD9D8864239508D600565E61 /* ProductsApiImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsApiImpl.swift; sourceTree = "<group>"; };
 		DDE324D02394F8F500CC9C70 /* ProductListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewModel.swift; sourceTree = "<group>"; };
 		DDE324D32394FD0000CC9C70 /* ProductsApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsApi.swift; sourceTree = "<group>"; };
-		E347EF759CF238FAFD466F78 /* libPods-Market.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Market.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F5510448C2C3450A23466D5E /* Pods_Market_MarketUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Market_MarketUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				54D6F49D9F8030F8D68BE51B /* libPods-Market.a in Frameworks */,
+				2FB403DDBA78ADD8D6C0945C /* Pods_Market.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,7 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55DA9D0C6051CFD2A227C41D /* libPods-MarketTests.a in Frameworks */,
+				377A80DCB10F616B75AB7222 /* Pods_MarketTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,7 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7A35E4FC6330CE9D833F1336 /* libPods-Market-MarketUITests.a in Frameworks */,
+				A1E4162819062CBCE242B89E /* Pods_Market_MarketUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,11 +104,19 @@
 		A750484DFD0597B752F43947 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E347EF759CF238FAFD466F78 /* libPods-Market.a */,
-				D8C7908DDA7A0676A4919C60 /* libPods-Market-MarketUITests.a */,
-				226474BE0458A109FC8BF404 /* libPods-MarketTests.a */,
+				D1FF8EE6AF329A2F6454C8D1 /* Pods_Market.framework */,
+				F5510448C2C3450A23466D5E /* Pods_Market_MarketUITests.framework */,
+				348225517FF21A0C326CCC21 /* Pods_MarketTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DD4DD9F2239646580036FB21 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				DD4DD9F32396595E0036FB21 /* ProductListCell.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		DD5A0E7A2394F601007F222B = {
@@ -204,7 +214,8 @@
 		DD785E432395E81F00CB76B9 /* List */ = {
 			isa = PBXGroup;
 			children = (
-				DD5A0E8A2394F601007F222B /* ProductListController.swift */,
+				DD4DD9F2239646580036FB21 /* Components */,
+				DD5A0E8A2394F601007F222B /* ProductListViewController.swift */,
 				DDE324D02394F8F500CC9C70 /* ProductListViewModel.swift */,
 				DD785E412395E7D500CB76B9 /* ProductListModel.swift */,
 			);
@@ -263,6 +274,7 @@
 				DD5A0E7F2394F601007F222B /* Sources */,
 				DD5A0E802394F601007F222B /* Frameworks */,
 				DD5A0E812394F601007F222B /* Resources */,
+				4099673AE629D10DE26A107E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -300,6 +312,7 @@
 				DD5A0EA02394F603007F222B /* Sources */,
 				DD5A0EA12394F603007F222B /* Frameworks */,
 				DD5A0EA22394F603007F222B /* Resources */,
+				F1479056F9BE2AD90DE3A42B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -403,6 +416,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		4099673AE629D10DE26A107E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Market/Pods-Market-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Market/Pods-Market-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Market/Pods-Market-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		AEC48AC52CB8BB3B74541F03 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -447,6 +477,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		F1479056F9BE2AD90DE3A42B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Market-MarketUITests/Pods-Market-MarketUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Market-MarketUITests/Pods-Market-MarketUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Market-MarketUITests/Pods-Market-MarketUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -458,8 +505,9 @@
 				DDE324D12394F8F500CC9C70 /* ProductListViewModel.swift in Sources */,
 				DD9D8863239505CE00565E61 /* Product.swift in Sources */,
 				DD9D8865239508D600565E61 /* ProductsApiImpl.swift in Sources */,
-				DD5A0E8B2394F601007F222B /* ProductListController.swift in Sources */,
+				DD5A0E8B2394F601007F222B /* ProductListViewController.swift in Sources */,
 				DDE324D42394FD0000CC9C70 /* ProductsApi.swift in Sources */,
+				DD4DD9F42396595E0036FB21 /* ProductListCell.swift in Sources */,
 				DD5A0E872394F601007F222B /* AppDelegate.swift in Sources */,
 				DD5A0E892394F601007F222B /* SceneDelegate.swift in Sources */,
 			);
@@ -629,6 +677,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Market/Support/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -647,6 +696,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Market/Support/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
