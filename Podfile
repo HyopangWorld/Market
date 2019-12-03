@@ -10,6 +10,9 @@ target 'Market' do
   pod 'RxSwift', '~> 5'
   pod 'RxCocoa', '~> 5'
   
+  # Image + Animation + UI
+  pod 'SnapKit', '~> 4'
+  
   target 'MarketTests' do
     inherit! :search_paths
     # Pods for testing
