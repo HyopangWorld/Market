@@ -1,5 +1,5 @@
 //
-//  ProductDetailViewController.swift
+//  MarketViewModel.swift
 //  Market
 //
 //  Created by 김효원 on 02/12/2019.
@@ -7,14 +7,9 @@
 //
 
 import Foundation
-import UIKit
 import RxSwift
 import RxCocoa
 
-protocol ProductDetailViewBindable {
-    
-}
-
-class ProductDetailViewController: UIViewController {
+struct ProductListViewModel {
     
 }

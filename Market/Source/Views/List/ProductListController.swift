@@ -11,9 +11,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-
-class MarketViewController: UIViewController {
-
+class ProductListController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
