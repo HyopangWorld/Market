@@ -25,6 +25,6 @@ enum ProductsApiError: Error {
 }
 
 protocol ProductsApi {
-    func getProdcuts(page: Int?) -> Observable<Result<[Product], ProductsApiError>>
+    func getProdcuts(page: (Int?, Int?)) -> Observable<Result<[Product], ProductsApiError>>
     func getProdcut(id: Int?) -> Observable<Result<Product, ProductsApiError>>
 }

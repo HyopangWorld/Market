@@ -1,5 +1,8 @@
 PODS:
   - Differentiator (4.0.1)
+  - Kingfisher (5.11.0):
+    - Kingfisher/Core (= 5.11.0)
+  - Kingfisher/Core (5.11.0)
   - RxAppState (1.6.0):
     - RxCocoa (~> 5.0)
     - RxSwift (~> 5.0)
@@ -18,8 +21,10 @@ PODS:
   - RxSwift (5.0.1)
   - SnapKit (5.0.1)
   - Then (2.6.0)
+  - Toaster (2.2.0)
 
 DEPENDENCIES:
+  - Kingfisher (~> 5.11.0)
   - RxAppState
   - RxCocoa (~> 5)
   - RxDataSources (~> 4.0)
@@ -27,10 +32,12 @@ DEPENDENCIES:
   - RxSwift (~> 5)
   - SnapKit (~> 5.0.1)
   - Then (~> 2.6.0)
+  - Toaster (~> 2.2.0)
 
 SPEC REPOS:
   trunk:
     - Differentiator
+    - Kingfisher
     - RxAppState
     - RxCocoa
     - RxDataSources
@@ -39,9 +46,11 @@ SPEC REPOS:
     - RxSwift
     - SnapKit
     - Then
+    - Toaster
 
 SPEC CHECKSUMS:
   Differentiator: 886080237d9f87f322641dedbc5be257061b0602
+  Kingfisher: 4569606189149e19c7d9439f47e885d0679b7a90
   RxAppState: b633d7370970ecb80081912ea08a7bf3eb644b4e
   RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
   RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
@@ -50,7 +59,8 @@ SPEC CHECKSUMS:
   RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   Then: 90cd104fd951cec1980a03f57704ad8f784d4d79
+  Toaster: c1a81b376edcc2470157b4d1ee1e9341d3b96455
 
-PODFILE CHECKSUM: 5e543c43da9c6ad578621363b2c7f28509199ab3
+PODFILE CHECKSUM: 188aa98d0e4f5dac8014a59ac18de19f1644a9f0
 
 COCOAPODS: 1.8.4

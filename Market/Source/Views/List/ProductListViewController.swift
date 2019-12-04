@@ -6,15 +6,26 @@
 //  Copyright © 2019 김효원. All rights reserved.
 //
 
-import Foundation
 import UIKit
-
 import RxSwift
 import RxCocoa
+import RxAppState
 import SnapKit
 import Then
+import Toaster
+
+protocol ProductListViewBindable {
+    var viewWillAppear: PublishSubject<Void> { get }
+    var willDisplayCell: PublishRelay<IndexPath> { get }
+    
+    var cellData: Driver<[ProductListCell.Data]> { get }
+    var reloadList: Signal<Void> { get }
+    var errorMessage: Signal<String> { get }
+}
 
 class ProductListViewController: UIViewController {
+    var disposeBag = DisposeBag()
+    
     let collectionView = UICollectionView()
     
     init() {
@@ -31,6 +42,37 @@ class ProductListViewController: UIViewController {
         layout()
     }
     
+    func bind(_ viewModel: ProductListViewBindable) {
+        self.disposeBag = DisposeBag()
+        
+        // 해당 뷰가 나타나면 viewModel에 viewWillAppear 실행
+        self.rx.viewWillAppear
+            .map { _ in Void() }
+            .bind(to: viewModel.viewWillAppear)
+            .disposed(by: disposeBag)
+        
+        // collectionView가 나타나면 viewModel에 willDisplayCell 실행
+        collectionView.rx.willDisplayCell
+            .map { $0.at }
+            .bind(to: viewModel.willDisplayCell)
+            .disposed(by: disposeBag)
+        
+        viewModel.cellData
+            .drive(collectionView.rx.items) { collection, row, data in
+                let index = IndexPath(row: row, section: 0)
+                let cell = collection.dequeueReusableCell(withReuseIdentifier: String(describing: ProductListCell.self), for: index) as! ProductListCell
+                cell.setData(data: data)
+                return cell
+        }
+        .disposed(by: disposeBag)
+        
+        viewModel.errorMessage
+            .emit(onNext: {
+                Toast(text: $0, delay: 0, duration: 1).show()
+            })
+            .disposed(by: disposeBag)
+    }
+    
     func attribute() {
         view.backgroundColor = .white
         navigationController?.navigationBar.frame = CGRect.init(x: 0, y: 0, width: view.frame.width, height: 60)
@@ -42,7 +84,7 @@ class ProductListViewController: UIViewController {
             UIColor.white
         ]
         navigationController?.navigationBar.layer.addSublayer(gradient)
-
+        
         let navAppearance = UINavigationBarAppearance()
         navAppearance.shadowColor = nil
         navigationController?.navigationBar.standardAppearance = navAppearance
@@ -67,7 +109,7 @@ class ProductListViewController: UIViewController {
     
     func layout(){
         view.addSubview(collectionView)
-
+        
         collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }

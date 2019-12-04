@@ -13,12 +13,13 @@ import RxCocoa
 
 class ProductsApiImpl: ProductsApi {
     private let session: URLSession
+    private let baseURL = "https://2jt4kq01ij.execute-api.ap-northeast-2.amazonaws.com/prod/"
     
     init(session: URLSession = .shared) {
         self.session = session
     }
     
-    func getProdcuts(page: Int?) -> Observable<Result<[Product], ProductsApiError>> {
+    func getProdcuts(page: (Int?, Int?)) -> Observable<Result<[Product], ProductsApiError>> {
         let error = ProductsApiError.defaultError
         return .just(.failure(error))
     }

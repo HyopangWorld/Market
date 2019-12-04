@@ -13,8 +13,10 @@ target 'Market' do
   pod "RxAppState"                # app 실행 상태, view 상태 알림
   pod 'RxDataSources', '~> 4.0'   # table 및 collection 데이터 소스
   
-  # UI
+  # UI (Autolayout, Image, Animation)
   pod 'SnapKit', '~> 5.0.1'
+  pod 'Toaster', '~> 2.2.0'
+  pod 'Kingfisher', '~> 5.11.0'
   
   # Other Swift Utilities
   pod 'Then', '~> 2.6.0'
