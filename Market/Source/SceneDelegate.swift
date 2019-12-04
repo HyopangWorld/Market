@@ -18,9 +18,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // 따로 layout 파일을 생성하지 않는다면 수동으로 화면을 생성하고, 화면에 그 객체를 표시 해주어야 함.
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = UINavigationController(rootViewController: ProductListViewController())
+        let rootViewController = ProductListViewController()
+        let rootViewModel = ProductListViewModel()
+        rootViewController.bind(rootViewModel)
+        
         window?.makeKeyAndVisible()
         window?.windowScene = windowScence
+        window?.rootViewController = UINavigationController(rootViewController: rootViewController)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

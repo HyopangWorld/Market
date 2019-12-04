@@ -52,7 +52,7 @@ struct ProductListViewModel: ProductListViewBindable {
             .combineLatest(willDisplayCell, cells) { (indexPath: $0, list: $1) }
             .map { data -> Int? in
                 guard data.list.count > 20 else {
-                    return nil
+                        return nil
                 }
                 
                 let lastCellCount = data.list.count
@@ -107,6 +107,6 @@ struct ProductListViewModel: ProductListViewBindable {
         
         self.errorMessage = Observable
             .merge(productListError, fetchedError)
-            .asSignal(onErrorJustReturn: ProductsApiError.defaultError.message ?? "")
+            .asSignal(onErrorJustReturn: ProductsNetworkError.defaultError.message ?? "")
     }
 }

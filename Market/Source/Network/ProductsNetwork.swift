@@ -10,7 +10,7 @@ import Foundation
 
 import RxSwift
 
-enum ProductsApiError: Error {
+enum ProductsNetworkError: Error {
     case error(String)
     case defaultError
     
@@ -24,7 +24,7 @@ enum ProductsApiError: Error {
     }
 }
 
-protocol ProductsApi {
-    func getProdcuts(page: (Int?, Int?)) -> Observable<Result<[Product], ProductsApiError>>
-    func getProdcut(id: Int?) -> Observable<Result<Product, ProductsApiError>>
+protocol ProductsNetwork {
+    func getProdcuts(page: (Int?, Int?)) -> Observable<Result<[Product], ProductsNetworkError>>
+    func getProdcut(id: Int) -> Observable<Result<Product, ProductsNetworkError>>
 }

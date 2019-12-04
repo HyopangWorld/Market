@@ -26,7 +26,7 @@ protocol ProductListViewBindable {
 class ProductListViewController: UIViewController {
     var disposeBag = DisposeBag()
     
-    let collectionView = UICollectionView()
+    var collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: UICollectionViewFlowLayout())
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -62,12 +62,21 @@ class ProductListViewController: UIViewController {
                 let index = IndexPath(row: row, section: 0)
                 let cell = collection.dequeueReusableCell(withReuseIdentifier: String(describing: ProductListCell.self), for: index) as! ProductListCell
                 cell.setData(data: data)
+                print("cellData들어옴")
                 return cell
         }
         .disposed(by: disposeBag)
         
+        viewModel.reloadList
+            .emit(onNext: { [weak self] _ in
+                print("reloadList")
+                self?.collectionView.reloadData()
+            })
+            .disposed(by: disposeBag)
+        
         viewModel.errorMessage
             .emit(onNext: {
+                print("[ERROR] : \($0)")
                 Toast(text: $0, delay: 0, duration: 1).show()
             })
             .disposed(by: disposeBag)
@@ -78,7 +87,7 @@ class ProductListViewController: UIViewController {
         navigationController?.navigationBar.frame = CGRect.init(x: 0, y: 0, width: view.frame.width, height: 60)
         
         let gradient = CAGradientLayer()
-        gradient.frame = CGRect(x: 0, y: (navigationController?.navigationBar.frame.height)!, width: view.frame.width, height: 5)
+        gradient.frame = CGRect(x: 0, y: navigationController!.navigationBar.frame.height, width: view.frame.width, height: 5)
         gradient.colors = [
             UIColor(displayP3Red: CGFloat(24/255), green: CGFloat(24/255), blue: CGFloat(80/255), alpha: 0.12).cgColor,
             UIColor.white
@@ -96,8 +105,14 @@ class ProductListViewController: UIViewController {
             $0.width.equalTo(23)
             $0.height.equalTo(23)
             $0.centerX.equalToSuperview()
-            $0.bottom.equalTo((navigationController?.navigationBar.snp.bottom)!).offset(5)
+            $0.bottom.equalTo(navigationController!.navigationBar.snp.bottom).offset(5)
         }
+    }
+    
+    func layout(){
+        let flowLayout = UICollectionViewFlowLayout()
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: navigationController!.navigationBar.frame.height + 45,
+                                                        width: view.frame.width, height: view.frame.height), collectionViewLayout: flowLayout)
         
         collectionView.do {
             $0.backgroundView = UIView()
@@ -105,14 +120,8 @@ class ProductListViewController: UIViewController {
             $0.backgroundColor = .white
             $0.register(ProductListCell.self, forCellWithReuseIdentifier: String(describing:ProductListCell.self))
         }
-    }
-    
-    func layout(){
-        view.addSubview(collectionView)
         
-        collectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+        view.addSubview(collectionView)
     }
 }
 
