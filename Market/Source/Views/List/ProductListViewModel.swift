@@ -14,8 +14,8 @@ import RxOptional
 struct ProductListViewModel: ProductListViewBindable {
     let dissposeBag = DisposeBag()
     
-    let viewWillAppear: PublishSubject<Void>
-    let willDisplayCell: PublishRelay<IndexPath>
+    let viewWillAppear = PublishSubject<Void>()
+    let willDisplayCell = PublishRelay<IndexPath>()
     let cellData: Driver<[ProductListCell.Data]>
     let reloadList: Signal<Void>
     let errorMessage: Signal<String>
