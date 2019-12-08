@@ -69,20 +69,20 @@ class ProductListCell: UICollectionViewCell {
         addSubview(titleLabel)
         addSubview(sellerLabel)
         
-        productImageView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().inset(16)
-            $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(50)
-        }
-        
-        titleLabel.snp.makeConstraints {
-            $0.top.equalTo(productImageView.snp.bottom).offset(4)
-            $0.centerX.equalToSuperview()
-        }
-        
-        sellerLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(1)
-            $0.centerX.equalToSuperview()
-        }
+//        productImageView.snp.makeConstraints {
+//            $0.top.bottom.equalToSuperview().inset(16)
+//            $0.centerX.equalToSuperview()
+//            $0.width.height.equalTo(50)
+//        }
+//
+//        titleLabel.snp.makeConstraints {
+//            $0.top.equalTo(productImageView.snp.bottom).offset(4)
+//            $0.centerX.equalToSuperview()
+//        }
+//
+//        sellerLabel.snp.makeConstraints {
+//            $0.top.equalTo(titleLabel.snp.bottom).offset(1)
+//            $0.centerX.equalToSuperview()
+//        }
     }
 }

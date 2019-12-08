@@ -12,9 +12,9 @@ import RxCocoa
 import RxOptional
 
 struct ProductListViewModel: ProductListViewBindable {
-    let dissposeBag = DisposeBag()
+    let disposeBag = DisposeBag()
     
-    let viewWillAppear = PublishSubject<Void>()
+    let viewWillAppear = PublishRelay<Void>()
     let willDisplayCell = PublishRelay<IndexPath>()
     let cellData: Driver<[ProductListCell.Data]>
     let reloadList: Signal<Void>
@@ -30,83 +30,46 @@ struct ProductListViewModel: ProductListViewBindable {
         
         let productListValue = productListResult
             .map { result -> [Product]? in
+            print("productListValue 호출")
                 guard case .success(let value) = result else {
                     return nil
                 }
+                print("productListValue 성공")
                 return value
             }
             .filterNil()
-        
         
         let productListError = productListResult
             .map { result -> String? in
                 guard case .failure(let error) = result else {
                     return nil
                 }
+                print("productListValue 실패")
                 return error.message
             }
             .filterNil()
         
-        
-        let shouldMoreFatch = Observable
-            .combineLatest(willDisplayCell, cells) { (indexPath: $0, list: $1) }
-            .map { data -> Int? in
-                guard data.list.count > 20 else {
-                        return nil
-                }
-                
-                let lastCellCount = data.list.count
-                if (lastCellCount - 1) == data.indexPath.row {
-                    return data.indexPath.row
-                }
-                
-                return nil
-            }
-            .filterNil()
-        
-        let fetchedResult = shouldMoreFatch
-            .distinctUntilChanged()
-            .flatMapLatest(model.fetchMoreData)
-            .asObservable()
-            .share()
-        
-        let fetchedList = fetchedResult
-            .map { result -> [Product]? in
-                guard case .success(let value) = result else {
-                    return nil
-                }
-                return value
-            }
-            .filterNil()
-        
-        let fetchedError = fetchedResult
-            .map { result -> String? in
-                guard case .failure(let error) = result else {
-                    return nil
-                }
-                return error.message
-            }
-            .filterNil()
-        
-        Observable
-            .merge(productListValue, fetchedList)
-            .scan([]){ prev, newList in
-                return newList.isEmpty ? [] : prev + newList
-            }
-            .bind(to: cells)
-            .disposed(by: dissposeBag)
-        
-        self.cellData = cells
+//        Observable
+//            .merge(productListValue)
+//            .bind(to: cells)
+//            .disposed(by: disposeBag)
+//
+//        self.cellData = cells
+//            .map(model.pasrseData)
+//            .asDriver(onErrorDriveWith: .empty())
+
+        self.cellData = Observable
+            .merge(productListValue)
             .map(model.pasrseData)
             .asDriver(onErrorDriveWith: .empty())
-        
+
         self.reloadList = Observable
-            .zip(productListValue, fetchedList)
+            .merge(productListValue)
             .map { _ in Void() }
             .asSignal(onErrorSignalWith: .empty())
-        
+
         self.errorMessage = Observable
-            .merge(productListError, fetchedError)
+            .merge(productListError)
             .asSignal(onErrorJustReturn: ProductsNetworkError.defaultError.message ?? "")
     }
 }

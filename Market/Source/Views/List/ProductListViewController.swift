@@ -10,12 +10,13 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxAppState
+import RxDataSources
 import SnapKit
 import Then
 import Toaster
 
 protocol ProductListViewBindable {
-    var viewWillAppear: PublishSubject<Void> { get }
+    var viewWillAppear: PublishRelay<Void> { get }
     var willDisplayCell: PublishRelay<IndexPath> { get }
     
     var cellData: Driver<[ProductListCell.Data]> { get }
@@ -45,27 +46,27 @@ class ProductListViewController: UIViewController {
     func bind(_ viewModel: ProductListViewBindable) {
         self.disposeBag = DisposeBag()
         
-        // 해당 뷰가 나타나면 viewModel에 viewWillAppear 실행
         self.rx.viewWillAppear
             .map { _ in Void() }
             .bind(to: viewModel.viewWillAppear)
             .disposed(by: disposeBag)
         
-        // collectionView가 나타나면 viewModel에 willDisplayCell 실행
         collectionView.rx.willDisplayCell
             .map { $0.at }
             .bind(to: viewModel.willDisplayCell)
             .disposed(by: disposeBag)
         
+        viewModel.cellData.drive(onNext: { _ in print("hh") }).disposed(by: disposeBag)
+        
         viewModel.cellData
             .drive(collectionView.rx.items) { collection, row, data in
+                print("cellData들어옴")
                 let index = IndexPath(row: row, section: 0)
                 let cell = collection.dequeueReusableCell(withReuseIdentifier: String(describing: ProductListCell.self), for: index) as! ProductListCell
                 cell.setData(data: data)
-                print("cellData들어옴")
                 return cell
-        }
-        .disposed(by: disposeBag)
+            }
+            .disposed(by: disposeBag)
         
         viewModel.reloadList
             .emit(onNext: { [weak self] _ in
