@@ -27,7 +27,7 @@ protocol ProductListViewBindable {
 class ProductListViewController: UIViewController {
     var disposeBag = DisposeBag()
     
-    var collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: UICollectionViewFlowLayout())
+    var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -56,11 +56,8 @@ class ProductListViewController: UIViewController {
             .bind(to: viewModel.willDisplayCell)
             .disposed(by: disposeBag)
         
-        viewModel.cellData.drive(onNext: { _ in print("hh") }).disposed(by: disposeBag)
-        
         viewModel.cellData
             .drive(collectionView.rx.items) { collection, row, data in
-                print("cellData들어옴")
                 let index = IndexPath(row: row, section: 0)
                 let cell = collection.dequeueReusableCell(withReuseIdentifier: String(describing: ProductListCell.self), for: index) as! ProductListCell
                 cell.setData(data: data)
@@ -85,7 +82,6 @@ class ProductListViewController: UIViewController {
     
     func attribute() {
         view.backgroundColor = .white
-        navigationController?.navigationBar.frame = CGRect.init(x: 0, y: 0, width: view.frame.width, height: 60)
         
         let gradient = CAGradientLayer()
         gradient.frame = CGRect(x: 0, y: navigationController!.navigationBar.frame.height, width: view.frame.width, height: 5)
@@ -104,31 +100,40 @@ class ProductListViewController: UIViewController {
         
         titleImg.snp.makeConstraints {
             $0.width.equalTo(23)
-            $0.height.equalTo(23)
-            $0.centerX.equalToSuperview()
-            $0.bottom.equalTo(navigationController!.navigationBar.snp.bottom).offset(5)
+            $0.height.equalTo(21)
+            $0.centerX.centerY.equalToSuperview()
         }
     }
     
     func layout(){
-        let flowLayout = UICollectionViewFlowLayout()
-        collectionView = UICollectionView(frame: CGRect(x: 0, y: navigationController!.navigationBar.frame.height + 45,
-                                                        width: view.frame.width, height: view.frame.height), collectionViewLayout: flowLayout)
+        view.addSubview(collectionView)
+        
+        let window = UIApplication.shared.windows.first { $0.isKeyWindow }
+        let height = navigationController!.navigationBar.bounds.height + (window?.safeAreaInsets.top ?? 0) + 24
+        
+        collectionView.snp.makeConstraints {
+            $0.top.equalTo(height)
+            $0.leading.equalToSuperview().offset(12)
+            $0.trailing.equalToSuperview().inset(12)
+            $0.bottom.equalToSuperview()
+        }
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.do {
+            $0.scrollDirection = .vertical
+            let size = view.frame.width / 2 - (12 + 3.5)  // 옆 마진 + 가운데 간격
+            $0.itemSize = CGSize(width: size, height: size + 64)
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            $0.minimumLineSpacing = 24
+            $0.minimumInteritemSpacing = 3.5
+        }
         
         collectionView.do {
             $0.backgroundView = UIView()
             $0.backgroundView?.isHidden = true
             $0.backgroundColor = .white
             $0.register(ProductListCell.self, forCellWithReuseIdentifier: String(describing:ProductListCell.self))
+            $0.setCollectionViewLayout(layout, animated: true)
         }
-        
-        view.addSubview(collectionView)
-    }
-}
-
-
-extension UINavigationBar {
-    override open func sizeThatFits(_ size: CGSize) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 200)
     }
 }

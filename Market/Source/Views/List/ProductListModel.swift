@@ -21,7 +21,6 @@ struct ProductListModel {
     }
     
     func pasrseData(value: [Product]) -> [ProductListCell.Data] {
-        print("\(value)")
         return value.map {
             (id: $0.id ?? 0, thumbnailURL: $0.thumbnailURL ?? "", title: $0.title ?? "", seller: $0.seller ?? "")
         }
