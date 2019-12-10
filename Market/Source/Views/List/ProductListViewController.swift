@@ -69,6 +69,11 @@ class ProductListViewController: UIViewController {
             .bind(to: viewModel.viewWillFetch)
             .disposed(by: disposeBag)
         
+//        collectionView.rx.itemSelected
+//            .subscribe { indexpath in
+//                self.navigationController?.pushViewController(<#T##viewController: UIViewController##UIViewController#>, animated: true)
+//            }
+        
         viewModel.cellData
             .drive(collectionView.rx.items) { collection, row, data in
                 let index = IndexPath(row: row, section: 0)
@@ -143,7 +148,6 @@ class ProductListViewController: UIViewController {
             $0.hidesWhenStopped = true
             $0.style = .large
         }
-        
     }
     
     func layout(){
