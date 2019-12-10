@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol ProductDetailBindable {
-    
+    var id: Int { get }
 }
 
 class ProductDetailViewController: UIViewController {
@@ -29,8 +29,12 @@ class ProductDetailViewController: UIViewController {
         layout()
     }
     
-    func attribute() {
+    func bind(_ viewModel: ProductDetailBindable) {
         
+    }
+    
+    func attribute() {
+        view.backgroundColor = .white
     }
     
     func layout() {

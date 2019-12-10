@@ -70,10 +70,19 @@ class ProductListViewController: UIViewController {
             .bind(to: viewModel.viewWillFetch)
             .disposed(by: disposeBag)
         
-//        collectionView.rx.itemSelected
-//            .subscribe { indexpath in
-//                self.navigationController?.pushViewController(<#T##viewController: UIViewController##UIViewController#>, animated: true)
-//            }
+        collectionView.rx.itemSelected
+            .subscribe { indexpath in
+                guard let row = indexpath.element?.row else {
+                    return
+                }
+                
+                let detailViewController = ProductDetailViewController()
+                let detailViewModel = ProductDetailViewModel(id: row)
+                detailViewController.bind(detailViewModel)
+                
+                self.present(detailViewController, animated: true, completion: nil)
+            }
+            .disposed(by: disposeBag)
         
         viewModel.cellData
             .drive(collectionView.rx.items) { collection, row, data in

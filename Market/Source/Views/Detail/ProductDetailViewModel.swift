@@ -9,8 +9,9 @@
 import Foundation
 
 struct ProductDetailViewModel: ProductDetailBindable {
+    let id: Int
     
-    init(viewModel: ProductListModel) {
-        
+    init(model: ProductDetailModel = ProductDetailModel(), id: Int) {
+        self.id = id
     }
 }
