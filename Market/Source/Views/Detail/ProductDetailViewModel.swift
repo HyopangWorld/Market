@@ -6,10 +6,14 @@
 //  Copyright © 2019 김효원. All rights reserved.
 //
 
-import Foundation
+import RxSwift
+import RxCocoa
 
 struct ProductDetailViewModel: ProductDetailBindable {
-    let id: Int
+    let disposeBag = DisposeBag()
+    
+    internal let id: Int
+    let viewWillAppear = PublishRelay<Void>()
     
     init(model: ProductDetailModel = ProductDetailModel(), id: Int) {
         self.id = id

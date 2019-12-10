@@ -24,29 +24,13 @@ protocol ProductListViewBindable {
     var errorMessage: Signal<String> { get }
 }
 
-class ProductListViewController: UIViewController {
-    var disposeBag = DisposeBag()
-    
+class ProductListViewController: ViewController<ProductListViewBindable> {
     var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private var indicator = UIActivityIndicatorView()
     private var windowHeight: CGFloat = 0
     private var page = 1
     
-    init() {
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init?(coder:) is not implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        attribute()
-        layout()
-    }
-    
-    func bind(_ viewModel: ProductListViewBindable) {
+    override func bind(_ viewModel: ProductListViewBindable) {
         self.disposeBag = DisposeBag()
         
         self.rx.viewWillAppear
@@ -108,7 +92,7 @@ class ProductListViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    func attribute() {
+    override func attribute() {
         view.backgroundColor = .white
         
         let gradient = CAGradientLayer()
@@ -160,7 +144,7 @@ class ProductListViewController: UIViewController {
         }
     }
     
-    func layout(){
+    override func layout(){
         view.addSubview(collectionView)
         
         windowHeight = (UIApplication.shared.windows.first { $0.isKeyWindow })?.safeAreaInsets.top ?? 0

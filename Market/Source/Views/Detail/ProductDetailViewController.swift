@@ -6,38 +6,36 @@
 //  Copyright © 2019 김효원. All rights reserved.
 //
 
-import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
+import RxAppState
+import RxDataSources
+import SnapKit
+import Then
+import Toaster
 
 protocol ProductDetailBindable {
     var id: Int { get }
+    var viewWillAppear: PublishRelay<Void> { get }
 }
 
-class ProductDetailViewController: UIViewController {
+class ProductDetailViewController: ViewController<ProductDetailBindable> {
     
-    init() {
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init?(coder:) is not implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        attribute()
-        layout()
-    }
-    
-    func bind(_ viewModel: ProductDetailBindable) {
+    override func bind(_ viewModel: ProductDetailBindable) {
+        self.disposeBag = DisposeBag()
         
+        self.rx.viewWillAppear
+            .map { _ in Void() }
+            .bind(to: viewModel.viewWillAppear)
+            .disposed(by: disposeBag)
     }
     
-    func attribute() {
+    override func attribute() {
         view.backgroundColor = .white
     }
     
-    func layout() {
+    override func layout() {
         
     }
 }
