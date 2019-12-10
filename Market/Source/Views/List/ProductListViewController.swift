@@ -16,8 +16,8 @@ import Then
 import Toaster
 
 protocol ProductListViewBindable {
-    var viewWillAppear: PublishRelay<Void> { get }
-    var willDisplayCell: PublishRelay<IndexPath> { get }
+    var viewWillAppear: PublishRelay<Int> { get }
+    var viewWillFetch: PublishRelay<Int> { get }
     
     var cellData: Driver<[ProductListCell.Data]> { get }
     var reloadList: Signal<Void> { get }
@@ -28,6 +28,8 @@ class ProductListViewController: UIViewController {
     var disposeBag = DisposeBag()
     
     var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    var indicator = UIActivityIndicatorView()
+    var page = 1
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -47,14 +49,21 @@ class ProductListViewController: UIViewController {
         self.disposeBag = DisposeBag()
         
         self.rx.viewWillAppear
-            .map { _ in Void() }
+            .map { _ in self.page }
             .bind(to: viewModel.viewWillAppear)
             .disposed(by: disposeBag)
         
-        collectionView.rx.willDisplayCell
-            .map { $0.at }
-            .bind(to: viewModel.willDisplayCell)
-            .disposed(by: disposeBag)
+        collectionView.rx.contentOffset
+            .filter { $0.y > 0 }
+            .map{ $0.y - (self.collectionView.collectionViewLayout.collectionViewContentSize.height - self.collectionView.frame.height) }
+            .filter { $0 == 0 }
+            .map { _ in
+                self.indicator.startAnimating()
+                self.page += 1
+                return self.page
+        }
+        .bind(to: viewModel.viewWillFetch)
+        .disposed(by: disposeBag)
         
         viewModel.cellData
             .drive(collectionView.rx.items) { collection, row, data in
@@ -62,11 +71,12 @@ class ProductListViewController: UIViewController {
                 let cell = collection.dequeueReusableCell(withReuseIdentifier: String(describing: ProductListCell.self), for: index) as! ProductListCell
                 cell.setData(data: data)
                 return cell
-            }
-            .disposed(by: disposeBag)
+        }
+        .disposed(by: disposeBag)
         
         viewModel.reloadList
             .emit(onNext: { [weak self] _ in
+                self?.indicator.stopAnimating()
                 self?.collectionView.reloadData()
             })
             .disposed(by: disposeBag)
@@ -102,6 +112,38 @@ class ProductListViewController: UIViewController {
             $0.height.equalTo(24)
             $0.centerX.centerY.equalToSuperview()
         }
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.do {
+            $0.scrollDirection = .vertical
+            let size = view.frame.width / 2 - (12 + 3.5)  // 옆 마진 + 가운데 간격
+            $0.itemSize = CGSize(width: size, height: size + 20 + 60)
+            $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            $0.minimumLineSpacing = 24
+            $0.minimumInteritemSpacing = 3.5
+            $0.headerReferenceSize = CGSize(width: view.bounds.width, height: 24)
+            $0.footerReferenceSize = CGSize(width: view.bounds.width, height: 72)
+        }
+        
+        collectionView.do {
+            $0.backgroundView = UIView()
+            $0.backgroundView?.isHidden = true
+            $0.backgroundColor = .white
+            $0.register(ProductListCell.self, forCellWithReuseIdentifier: String(describing:ProductListCell.self))
+            $0.setCollectionViewLayout(layout, animated: true)
+        }
+        
+        collectionView.addSubview(indicator)
+        //        indicator.do {
+        //            $0.style = .large
+        //            $0.color = .black
+        //            $0.snp.makeConstraints {
+        //                $0.bottom.equalTo(collectionView.snp.bottom)
+        //                $0.centerX.equalToSuperview()
+        //                $0.width.height.equalTo(50)
+        //            }
+        //        }
+        
     }
     
     func layout(){
@@ -117,23 +159,11 @@ class ProductListViewController: UIViewController {
             $0.bottom.equalToSuperview()
         }
         
-        let layout = UICollectionViewFlowLayout()
-        layout.do {
-            $0.scrollDirection = .vertical
-            let size = view.frame.width / 2 - (12 + 3.5)  // 옆 마진 + 가운데 간격
-            $0.itemSize = CGSize(width: size, height: size + 20 + 60)
-            $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-            $0.minimumLineSpacing = 24
-            $0.minimumInteritemSpacing = 3.5
-            $0.headerReferenceSize = CGSize(width: view.bounds.width, height: 24)
-        }
-        
-        collectionView.do {
-            $0.backgroundView = UIView()
-            $0.backgroundView?.isHidden = true
-            $0.backgroundColor = .white
-            $0.register(ProductListCell.self, forCellWithReuseIdentifier: String(describing:ProductListCell.self))
-            $0.setCollectionViewLayout(layout, animated: true)
+        collectionView.addSubview(indicator)
+        indicator.snp.makeConstraints {
+            $0.bottom.equalTo(collectionView.snp.bottom)
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(100)
         }
     }
 }

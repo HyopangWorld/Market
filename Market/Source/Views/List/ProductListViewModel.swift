@@ -14,15 +14,21 @@ import RxOptional
 struct ProductListViewModel: ProductListViewBindable {
     let disposeBag = DisposeBag()
     
-    let viewWillAppear = PublishRelay<Void>()
-    let willDisplayCell = PublishRelay<IndexPath>()
+    let viewWillAppear = PublishRelay<Int>()
+    let viewWillFetch = PublishRelay<Int>()
     
     let cellData: Driver<[ProductListCell.Data]>
     let reloadList: Signal<Void>
     let errorMessage: Signal<String>
     
+    private var page = 0
+    
     init(model: ProductListModel = ProductListModel()){
-        let productListResult = viewWillAppear
+        let productListResult = Observable
+            .merge(
+                viewWillAppear.asObservable(),
+                viewWillFetch.asObservable()
+            )
             .flatMap(model.getProductList)
             .asObservable()
             .share()
@@ -44,37 +50,9 @@ struct ProductListViewModel: ProductListViewBindable {
                 return error.message
             }
             .filterNil()
-        
-        let fetchMore = willDisplayCell
-            .filter { $0.row % 50 >= 49 }
-            .map { return ($0.row/50) + 2 }
-        
-        let fetchListResult = fetchMore
-            .distinctUntilChanged()
-            .flatMapLatest(model.getProductList(page:))
-            .asObservable()
-            .share()
-        
-        let fetchListValue = fetchListResult
-            .map { result -> [Product]? in
-                guard case .success(let value) = result else {
-                    return nil
-                }
-                return value
-            }
-            .filterNil()
-        
-        let fetchListError = fetchListResult
-            .map { result -> String? in
-                guard case .failure(let error) = result else {
-                    return nil
-                }
-                return error.message
-            }
-            .filterNil()
 
         self.cellData = Observable
-            .merge(productListValue, fetchListValue)
+            .merge(productListValue)
             .scan([]){ prev, newList in
                 return newList.isEmpty ? [] : prev + newList
             }
@@ -82,12 +60,12 @@ struct ProductListViewModel: ProductListViewBindable {
             .asDriver(onErrorDriveWith: .empty())
 
         self.reloadList = Observable
-            .zip(productListValue, fetchListValue)
+            .merge(productListValue)
             .map { _ in Void() }
             .asSignal(onErrorSignalWith: .empty())
 
         self.errorMessage = Observable
-            .merge(productListError, fetchListError)
+            .merge(productListError)
             .asSignal(onErrorJustReturn: ProductsNetworkError.defaultError.message ?? "")
     }
 }
