@@ -175,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				DD785E402395E68500CB76B9 /* Commons */,
+				DD785E442395E82D00CB76B9 /* Detail */,
 				DD785E432395E81F00CB76B9 /* List */,
 			);
 			path = Views;
@@ -220,7 +221,6 @@
 				DD5A0E8A2394F601007F222B /* ProductListViewController.swift */,
 				DDE324D02394F8F500CC9C70 /* ProductListViewModel.swift */,
 				DD785E412395E7D500CB76B9 /* ProductListModel.swift */,
-				DD785E442395E82D00CB76B9 /* Detail */,
 			);
 			path = List;
 			sourceTree = "<group>";

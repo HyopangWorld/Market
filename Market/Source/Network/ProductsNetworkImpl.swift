@@ -18,8 +18,8 @@ class ProductsNetworkImpl: ProductsNetwork {
         self.session = session
     }
     
-    func getProdcuts(page: (Int?, Int?)) -> Observable<Result<[Product], ProductsNetworkError>> {
-        guard let url = makeGetProductsComponents(page: page.0).url else {
+    func getProdcuts(page: Int) -> Observable<Result<[Product], ProductsNetworkError>> {
+        guard let url = makeGetProductsComponents(page: page).url else {
             let error = ProductsNetworkError.error("유효하지 않은 URL입니다.")
             return .just(.failure(error))
         }
@@ -61,21 +61,14 @@ extension ProductsNetworkImpl {
         static let path = "/prod"
     }
     
-    func makeGetProductsComponents(page: Int?) -> URLComponents {
+    func makeGetProductsComponents(page: Int) -> URLComponents {
         var components = URLComponents()
         components.scheme = ProductAPI.scheme
         components.host = ProductAPI.host
         components.path = ProductAPI.path + "/products"
-        if let page = page {
-            components.queryItems = [
-                URLQueryItem(name: "page", value: "\(page)")
-            ]
-        }
-        else {
-            components.queryItems = [
-                URLQueryItem(name: "page", value: "1")
-            ]
-        }
+        components.queryItems = [
+            URLQueryItem(name: "page", value: "\(page)")
+        ]
         
         return components
     }

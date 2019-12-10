@@ -41,7 +41,8 @@ class ProductListCell: UICollectionViewCell {
             $0.kf.setImage(with: URL(string: data.thumbnailURL))
             $0.snp.updateConstraints {
                 $0.top.leading.trailing.equalToSuperview()
-                $0.width.height.equalTo(172)
+                $0.width.equalToSuperview()
+                $0.height.equalToSuperview().inset(40)
             }
             $0.layer.cornerRadius = 14
         }
@@ -54,14 +55,13 @@ class ProductListCell: UICollectionViewCell {
         }
         
         titleLabel.do {
-            $0.font = .systemFont(ofSize: 17, weight: .bold)
+            $0.font = .systemFont(ofSize: 16, weight: .bold)
             $0.textColor = UIColor(displayP3Red: (20/255), green: (20/255), blue: (40/255), alpha: 1)
             $0.numberOfLines = 2
-            $0.lineBreakMode = .byWordWrapping
         }
         
         sellerLabel.do {
-            $0.font = .systemFont(ofSize: 17, weight: .bold)
+            $0.font = .systemFont(ofSize: 16, weight: .bold)
             $0.textColor = UIColor(displayP3Red: (171/255), green: (171/255), blue: (196/255), alpha: 1)
             $0.numberOfLines = 1
         }
@@ -75,7 +75,8 @@ class ProductListCell: UICollectionViewCell {
         productImageView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(172)
+            $0.width.equalToSuperview()
+            $0.height.equalToSuperview().inset(40)
         }
 
         titleLabel.snp.makeConstraints {

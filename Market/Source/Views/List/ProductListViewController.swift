@@ -67,7 +67,6 @@ class ProductListViewController: UIViewController {
         
         viewModel.reloadList
             .emit(onNext: { [weak self] _ in
-                print("reloadList")
                 self?.collectionView.reloadData()
             })
             .disposed(by: disposeBag)
@@ -99,8 +98,8 @@ class ProductListViewController: UIViewController {
         navigationController?.navigationBar.addSubview(titleImg)
         
         titleImg.snp.makeConstraints {
-            $0.width.equalTo(23)
-            $0.height.equalTo(21)
+            $0.width.equalTo(25)
+            $0.height.equalTo(24)
             $0.centerX.centerY.equalToSuperview()
         }
     }
@@ -109,7 +108,7 @@ class ProductListViewController: UIViewController {
         view.addSubview(collectionView)
         
         let window = UIApplication.shared.windows.first { $0.isKeyWindow }
-        let height = navigationController!.navigationBar.bounds.height + (window?.safeAreaInsets.top ?? 0) + 24
+        let height = navigationController!.navigationBar.bounds.height + (window?.safeAreaInsets.top ?? 0)
         
         collectionView.snp.makeConstraints {
             $0.top.equalTo(height)
@@ -122,10 +121,11 @@ class ProductListViewController: UIViewController {
         layout.do {
             $0.scrollDirection = .vertical
             let size = view.frame.width / 2 - (12 + 3.5)  // 옆 마진 + 가운데 간격
-            $0.itemSize = CGSize(width: size, height: size + 64)
+            $0.itemSize = CGSize(width: size, height: size + 20 + 60)
             $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             $0.minimumLineSpacing = 24
             $0.minimumInteritemSpacing = 3.5
+            $0.headerReferenceSize = CGSize(width: view.bounds.width, height: 24)
         }
         
         collectionView.do {
