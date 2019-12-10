@@ -28,9 +28,9 @@ class ProductListViewController: UIViewController {
     var disposeBag = DisposeBag()
     
     var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    var indicator = UIActivityIndicatorView()
-    var windowHeight: CGFloat = 0
-    var page = 1
+    private var indicator = UIActivityIndicatorView()
+    private var windowHeight: CGFloat = 0
+    private var page = 1
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -50,17 +50,18 @@ class ProductListViewController: UIViewController {
         self.disposeBag = DisposeBag()
         
         self.rx.viewWillAppear
-            .map { _ in self.page }
+            .map { _ in 1 }
             .bind(to: viewModel.viewWillAppear)
             .disposed(by: disposeBag)
         
         collectionView.rx.contentOffset
             .skipUntil(viewModel.reloadList.asObservable())
-            .map { offset -> Int in
+            .filter { offset -> Bool in
                 let height = self.collectionView.collectionViewLayout.collectionViewContentSize.height - self.collectionView.frame.height + self.windowHeight
-                return Int(offset.y - height)
+                return Int(offset.y - height) == 0
             }
-            .filter{ $0 == 0 }
+            .map{ Int($0.y) }
+            .distinct()
             .map { y -> Int in
                 self.indicator.startAnimating()
                 self.page += 1
