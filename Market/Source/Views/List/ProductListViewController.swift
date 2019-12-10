@@ -29,6 +29,7 @@ class ProductListViewController: UIViewController {
     
     var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     var indicator = UIActivityIndicatorView()
+    var windowHeight: CGFloat = 0
     var page = 1
     
     init() {
@@ -54,16 +55,19 @@ class ProductListViewController: UIViewController {
             .disposed(by: disposeBag)
         
         collectionView.rx.contentOffset
-            .filter { $0.y > 0 }
-            .map{ $0.y - (self.collectionView.collectionViewLayout.collectionViewContentSize.height - self.collectionView.frame.height) }
-            .filter { $0 == 0 }
-            .map { _ in
+            .skipUntil(viewModel.reloadList.asObservable())
+            .map { offset -> Int in
+                let height = self.collectionView.collectionViewLayout.collectionViewContentSize.height - self.collectionView.frame.height + self.windowHeight
+                return Int(offset.y - height)
+            }
+            .filter{ $0 == 0 }
+            .map { y -> Int in
                 self.indicator.startAnimating()
                 self.page += 1
                 return self.page
-        }
-        .bind(to: viewModel.viewWillFetch)
-        .disposed(by: disposeBag)
+            }
+            .bind(to: viewModel.viewWillFetch)
+            .disposed(by: disposeBag)
         
         viewModel.cellData
             .drive(collectionView.rx.items) { collection, row, data in
@@ -122,7 +126,7 @@ class ProductListViewController: UIViewController {
             $0.minimumLineSpacing = 24
             $0.minimumInteritemSpacing = 3.5
             $0.headerReferenceSize = CGSize(width: view.bounds.width, height: 24)
-            $0.footerReferenceSize = CGSize(width: view.bounds.width, height: 72)
+            $0.footerReferenceSize = CGSize(width: view.bounds.width, height: 96)
         }
         
         collectionView.do {
@@ -133,24 +137,21 @@ class ProductListViewController: UIViewController {
             $0.setCollectionViewLayout(layout, animated: true)
         }
         
-        collectionView.addSubview(indicator)
-        //        indicator.do {
-        //            $0.style = .large
-        //            $0.color = .black
-        //            $0.snp.makeConstraints {
-        //                $0.bottom.equalTo(collectionView.snp.bottom)
-        //                $0.centerX.equalToSuperview()
-        //                $0.width.height.equalTo(50)
-        //            }
-        //        }
+        indicator.do {
+            $0.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+            $0.center = view.center
+            $0.hidesWhenStopped = true
+            $0.style = .large
+        }
         
     }
     
     func layout(){
         view.addSubview(collectionView)
         
-        let window = UIApplication.shared.windows.first { $0.isKeyWindow }
-        let height = navigationController!.navigationBar.bounds.height + (window?.safeAreaInsets.top ?? 0)
+        windowHeight = (UIApplication.shared.windows.first { $0.isKeyWindow })?.safeAreaInsets.top ?? 0
+        let height = navigationController!.navigationBar.bounds.height + windowHeight
+        windowHeight = windowHeight == 20 ? 0 : windowHeight
         
         collectionView.snp.makeConstraints {
             $0.top.equalTo(height)
@@ -159,11 +160,10 @@ class ProductListViewController: UIViewController {
             $0.bottom.equalToSuperview()
         }
         
-        collectionView.addSubview(indicator)
+        view.addSubview(indicator)
         indicator.snp.makeConstraints {
-            $0.bottom.equalTo(collectionView.snp.bottom)
+            $0.bottom.equalTo(collectionView.snp.bottom).inset(50)
             $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(100)
         }
     }
 }
