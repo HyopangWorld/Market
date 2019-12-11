@@ -26,6 +26,7 @@ protocol ProductDetailBindable {
 
 class ProductDetailViewController: ViewController<ProductDetailBindable> {
     let imageSlider = UIScrollView()
+    let closeButton = UIButton()
     
     override func bind(_ viewModel: ProductDetailBindable) {
         self.disposeBag = DisposeBag()
@@ -43,25 +44,42 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
         viewModel.errorMessage
             .emit(to: self.rx.toast())
             .disposed(by: disposeBag)
+        
+        closeButton.rx.controlEvent(.touchUpInside)
+            .subscribe(onNext: {
+                self.dismiss(animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func attribute() {
         view.backgroundColor = .white
         
         imageSlider.do {
-            $0.backgroundColor = .brown
             $0.isPagingEnabled = true
             $0.showsVerticalScrollIndicator = false
             $0.bounces = false
+        }
+        
+        closeButton.do {
+            $0.backgroundColor = UIColor(displayP3Red: (24/255), green: (24/255), blue: (40/255), alpha: 0.16)
+            $0.layer.cornerRadius = 20
+            $0.setImage(UIImage(named: "round_close_white.png"), for: .normal)
         }
     }
     
     override func layout() {
         view.addSubview(imageSlider)
+        view.addSubview(closeButton)
         
         imageSlider.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.height.equalTo(375)
+        }
+        
+        closeButton.snp.makeConstraints {
+            $0.top.trailing.equalToSuperview().inset(16)
+            $0.width.height.equalTo(40)
         }
     }
 }
