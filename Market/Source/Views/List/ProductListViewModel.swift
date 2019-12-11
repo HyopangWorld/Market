@@ -21,8 +21,6 @@ struct ProductListViewModel: ProductListViewBindable {
     let reloadList: Signal<Void>
     let errorMessage: Signal<String>
     
-    private var page = 0
-    
     init(model: ProductListModel = ProductListModel()){
         let productListResult = Observable
             .merge(

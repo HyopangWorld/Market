@@ -16,10 +16,6 @@ struct ProductListModel {
         self.productsNetwork = productsNetwork
     }
     
-    func getProductList() -> Observable<Result<[Product], ProductsNetworkError>> {
-        return productsNetwork.getProdcuts(page: 1)
-    }
-    
     func getProductList(page: Int) -> Observable<Result<[Product], ProductsNetworkError>> {
         return productsNetwork.getProdcuts(page: page)
     }
