@@ -15,9 +15,14 @@ import SnapKit
 import Then
 import Toaster
 
+typealias DetailData = (id: Int, thumbnail_720: String, thumbnailList: [String], title: String, seller: String,
+    cost: String, discount_cost: String, discount_rate: String, description: String)
+
 protocol ProductDetailBindable {
     var id: Int { get }
     var viewWillAppear: PublishRelay<Void> { get }
+    var productDetailData: Signal<DetailData> { get }
+    var errorMessage: Signal<String> { get }
 }
 
 class ProductDetailViewController: ViewController<ProductDetailBindable> {

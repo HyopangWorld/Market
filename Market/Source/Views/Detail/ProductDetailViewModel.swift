@@ -12,10 +12,44 @@ import RxCocoa
 struct ProductDetailViewModel: ProductDetailBindable {
     let disposeBag = DisposeBag()
     
-    internal let id: Int
+    let id: Int
     let viewWillAppear = PublishRelay<Void>()
+    let productDetailData: Signal<DetailData>
+    let errorMessage: Signal<String>
     
     init(model: ProductDetailModel = ProductDetailModel(), id: Int) {
         self.id = id
+        
+        let productDetailResult = viewWillAppear
+            .map{ _ in id}
+            .flatMapLatest(model.getProductDetail(id:))
+            .asObservable()
+            .share()
+        
+        let productDetailValue = productDetailResult
+            .map { result -> Product? in
+                guard case .success(let value) = result else {
+                    return nil
+                }
+                return value
+            }
+            .filterNil()
+        
+        let productDetailError = productDetailResult
+            .map { result -> String? in
+                guard case .failure(let error) = result else {
+                    return nil
+                }
+                return error.message
+            }
+            .filterNil()
+        
+        self.productDetailData = productDetailValue
+            .map(model.pasrseData)
+            .filterNil()
+            .asSignal(onErrorSignalWith: .empty())
+        
+        self.errorMessage = productDetailError
+            .asSignal(onErrorJustReturn: "잠시 후 다시 시도해 주세요")
     }
 }

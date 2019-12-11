@@ -12,7 +12,7 @@ import SnapKit
 import Kingfisher
 
 class ProductListCell: UICollectionViewCell {
-    typealias Data = (id: Int, thumbnailURL: String, title: String, seller: String)
+    typealias Data = (id: Int, thumbnail_520: String, title: String, seller: String)
     
     let productImageView = UIImageView()
     let titleLabel = UILabel()
@@ -38,7 +38,7 @@ class ProductListCell: UICollectionViewCell {
         }
         
         productImageView.do {
-            $0.kf.setImage(with: URL(string: data.thumbnailURL))
+            $0.kf.setImage(with: URL(string: data.thumbnail_520))
             $0.snp.updateConstraints {
                 $0.top.leading.trailing.equalToSuperview()
                 $0.width.equalToSuperview()
