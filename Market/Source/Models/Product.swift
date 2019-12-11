@@ -17,7 +17,7 @@ struct Product: Codable {
     enum CodingKeys: String, CodingKey {
         case id, title, seller, cost, discount_cost, discount_rate, description
         case thumbnail_520, thumbnail_720
-        case thumbnailList = "thumbnaillist320"
+        case thumbnailList = "thumbnail_list_320"
     }
     
     init(from decoder: Decoder) throws {

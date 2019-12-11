@@ -13,7 +13,7 @@ struct ProductDetailViewModel: ProductDetailBindable {
     let disposeBag = DisposeBag()
     
     let id: Int
-    let viewWillAppear = PublishRelay<Void>()
+    let viewWillAppear = PublishRelay<Int>()
     let productDetailData: Signal<DetailData>
     let errorMessage: Signal<String>
     
@@ -21,13 +21,16 @@ struct ProductDetailViewModel: ProductDetailBindable {
         self.id = id
         
         let productDetailResult = viewWillAppear
-            .map{ _ in id}
-            .flatMapLatest(model.getProductDetail(id:))
+            .flatMap(model.getProductDetail)
             .asObservable()
             .share()
         
+        productDetailResult.asObservable()
+            .subscribe{ print("요기용") }
+            .disposed(by: disposeBag)
+        
         let productDetailValue = productDetailResult
-            .map { result -> Product? in
+            .map { result -> [Product]? in
                 guard case .success(let value) = result else {
                     return nil
                 }

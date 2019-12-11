@@ -26,5 +26,5 @@ enum ProductsNetworkError: Error {
 
 protocol ProductsNetwork {
     func getProdcuts(page: Int) -> Observable<Result<[Product], ProductsNetworkError>>
-    func getProdcut(id: Int) -> Observable<Result<Product, ProductsNetworkError>>
+    func getProdcut(id: Int) -> Observable<Result<[Product], ProductsNetworkError>>
 }

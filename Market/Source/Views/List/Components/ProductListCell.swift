@@ -14,6 +14,7 @@ import Kingfisher
 class ProductListCell: UICollectionViewCell {
     typealias Data = (id: Int, thumbnail_520: String, title: String, seller: String)
     
+    var id: Int?
     let productImageView = UIImageView()
     let titleLabel = UILabel()
     let sellerLabel = UILabel()
@@ -29,6 +30,8 @@ class ProductListCell: UICollectionViewCell {
     }
     
     func setData(data: Data) {
+        self.id = data.id
+        
         titleLabel.do {
             $0.text = data.title
         }

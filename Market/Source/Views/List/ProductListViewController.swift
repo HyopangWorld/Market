@@ -13,7 +13,6 @@ import RxAppState
 import RxDataSources
 import SnapKit
 import Then
-import Toaster
 
 protocol ProductListViewBindable {
     var viewWillAppear: PublishRelay<Int> { get }
@@ -55,13 +54,13 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
             .disposed(by: disposeBag)
         
         collectionView.rx.itemSelected
-            .subscribe { indexpath in
-                guard let row = indexpath.element?.row else {
-                    return
-                }
+            .subscribe { event in
+                guard let indexpath = event.element else { return }
+                guard let cell = self.collectionView.cellForItem(at: indexpath) else { return }
+                guard let id = (cell as! ProductListCell).id else { return }
                 
                 let detailViewController = ProductDetailViewController()
-                let detailViewModel = ProductDetailViewModel(id: row)
+                let detailViewModel = ProductDetailViewModel(id: id)
                 detailViewController.bind(detailViewModel)
                 
                 self.present(detailViewController, animated: true, completion: nil)
@@ -85,10 +84,7 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
             .disposed(by: disposeBag)
         
         viewModel.errorMessage
-            .emit(onNext: {
-                print("[ERROR] : \($0)")
-                Toast(text: $0, delay: 0, duration: 1).show()
-            })
+            .emit(to: self.rx.toast())
             .disposed(by: disposeBag)
     }
     
@@ -146,6 +142,7 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
     
     override func layout(){
         view.addSubview(collectionView)
+        view.addSubview(indicator)
         
         windowHeight = (UIApplication.shared.windows.first { $0.isKeyWindow })?.safeAreaInsets.top ?? 0
         let height = navigationController!.navigationBar.bounds.height + windowHeight
@@ -158,7 +155,6 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
             $0.bottom.equalToSuperview()
         }
         
-        view.addSubview(indicator)
         indicator.snp.makeConstraints {
             $0.bottom.equalTo(collectionView.snp.bottom).inset(50)
             $0.centerX.equalToSuperview()

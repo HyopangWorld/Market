@@ -16,19 +16,20 @@ struct ProductDetailModel {
         self.productsNetwork = productsNetwork
     }
     
-    func getProductDetail(id: Int) -> Observable<Result<Product, ProductsNetworkError>> {
+    func getProductDetail(id: Int) -> Observable<Result<[Product], ProductsNetworkError>> {
         return productsNetwork.getProdcut(id: id)
     }
     
-    func pasrseData(value: Product) -> DetailData? {
-        return (id: value.id ?? 0,
-        thumbnail_720: value.thumbnail_720 ?? "",
-        thumbnailList: value.thumbnailList ?? [],
-        title: value.title ?? "",
-        seller: value.seller ?? "",
-        cost: value.cost ?? "",
-        discount_cost: value.discount_cost ?? "",
-        discount_rate: value.discount_rate ?? "",
-        description: value.description ?? "")
+    func pasrseData(value: [Product]) -> DetailData? {
+        let val = value.first
+        return (id: val?.id ?? 0,
+        thumbnail_720: val?.thumbnail_720 ?? "",
+        thumbnailList: val?.thumbnailList ?? [],
+        title: val?.title ?? "",
+        seller: val?.seller ?? "",
+        cost: val?.cost ?? "",
+        discount_cost: val?.discount_cost ?? "",
+        discount_rate: val?.discount_rate ?? "",
+        description: val?.description ?? "")
     }
 }
