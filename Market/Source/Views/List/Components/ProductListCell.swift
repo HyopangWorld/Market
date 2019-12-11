@@ -10,13 +10,14 @@ import UIKit
 
 import SnapKit
 import Kingfisher
+import KRWordWrapLabel
 
 class ProductListCell: UICollectionViewCell {
     typealias Data = (id: Int, thumbnail_520: String, title: String, seller: String)
     
     var id: Int?
     let productImageView = UIImageView()
-    let titleLabel = UILabel()
+    let titleLabel = KRWordWrapLabel()
     let sellerLabel = UILabel()
     
     override init(frame: CGRect) {
@@ -61,6 +62,7 @@ class ProductListCell: UICollectionViewCell {
             $0.font = .systemFont(ofSize: 16, weight: .bold)
             $0.textColor = UIColor(displayP3Red: (20/255), green: (20/255), blue: (40/255), alpha: 1)
             $0.numberOfLines = 2
+            $0.lineBreakMode = .byWordWrapping
         }
         
         sellerLabel.do {

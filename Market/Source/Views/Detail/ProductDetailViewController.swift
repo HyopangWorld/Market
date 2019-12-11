@@ -13,6 +13,7 @@ import RxAppState
 import RxDataSources
 import SnapKit
 import Then
+import KRWordWrapLabel
 
 typealias DetailData = (id: Int, thumbnail_720: String, thumbnailList: [String], title: String, seller: String,
     cost: String, discount_cost: String, discount_rate: String, description: String)
@@ -25,8 +26,20 @@ protocol ProductDetailBindable {
 }
 
 class ProductDetailViewController: ViewController<ProductDetailBindable> {
+    let scrollView = UIScrollView()
     let imageSlider = UIScrollView()
     let closeButton = UIButton()
+    
+    let sellerLabel = UILabel()
+    let titleLabel = KRWordWrapLabel()
+    let discountRateLabel = UILabel()
+    let costLabel = UILabel()
+    let discountCostLabel = UILabel()
+    let line = UIView()
+    let descriptionLabel = UILabel()
+    
+    let noticeLabel = UILabel()
+    let buyButton = UIButton()
     
     override func bind(_ viewModel: ProductDetailBindable) {
         self.disposeBag = DisposeBag()
@@ -53,7 +66,9 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
     }
     
     override func attribute() {
-        view.backgroundColor = .white
+        scrollView.do {
+            $0.backgroundColor = .white
+        }
         
         imageSlider.do {
             $0.isPagingEnabled = true
@@ -66,20 +81,131 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
             $0.layer.cornerRadius = 20
             $0.setImage(UIImage(named: "round_close_white.png"), for: .normal)
         }
+        
+        sellerLabel.do {
+            $0.font = .systemFont(ofSize: 14, weight: .bold)
+            $0.textColor = UIColor(displayP3Red: (74/255), green: (144/255), blue: (226/255), alpha: 1)
+            $0.numberOfLines = 1
+        }
+        
+        titleLabel.do {
+            $0.font = .systemFont(ofSize: 40, weight: .bold)
+            $0.textColor = UIColor(displayP3Red: (20/255), green: (20/255), blue: (40/255), alpha: 1)
+            $0.lineBreakMode = .byWordWrapping
+            $0.numberOfLines = 10
+        }
+        
+        discountRateLabel.do {
+            $0.font = .systemFont(ofSize: 22, weight: .bold)
+            $0.textColor = UIColor(displayP3Red: (255/255), green: (88/255), blue: (108/255), alpha: 1)
+            $0.numberOfLines = 1
+        }
+        
+        discountCostLabel.do {
+            $0.font = .systemFont(ofSize: 22, weight: .bold)
+            $0.textColor = UIColor(displayP3Red: (20/255), green: (20/255), blue: (40/255), alpha: 1)
+            $0.numberOfLines = 1
+        }
+        
+        costLabel.do {
+            $0.font = .systemFont(ofSize: 22, weight: .bold)
+            $0.textColor = UIColor(displayP3Red: (171/255), green: (171/255), blue: (196/255), alpha: 1)
+            $0.numberOfLines = 1
+        }
+        
+        line.do {
+            $0.backgroundColor = UIColor(displayP3Red: (236/255), green: (236/255), blue: (245/255), alpha: 1)
+            $0.layer.cornerRadius = 15
+        }
+        
+        descriptionLabel.do {
+            $0.font = .systemFont(ofSize: 16, weight: .medium)
+            $0.textColor = UIColor(displayP3Red: (20/255), green: (20/255), blue: (40/255), alpha: 1)
+            $0.numberOfLines = 0
+        }
+        
+        noticeLabel.do {
+            $0.backgroundColor = UIColor(displayP3Red: (246/255), green: (246/255), blue: (250/255), alpha: 1)
+            $0.layer.frame = CGRect(x: 0, y: 0, width: 96, height: 327)
+            $0.font = .systemFont(ofSize: 12, weight: .medium)
+            $0.textColor = UIColor(displayP3Red: (163/255), green: (163/255), blue: (181/255), alpha: 1)
+            $0.textAlignment = .center
+            $0.numberOfLines = 0
+            $0.text = "부랑구마켓은 통신판매중개자이며 통신판매의 당사자가 아닙니다. 따라서 부랑구마켓은 상품 거래정보 및 거래에 대하여 책임을 지지 않습니다."
+        }
     }
     
     override func layout() {
-        view.addSubview(imageSlider)
+        scrollView.addSubview(imageSlider)
+        scrollView.addSubview(sellerLabel)
+        scrollView.addSubview(titleLabel)
+        scrollView.addSubview(discountRateLabel)
+        scrollView.addSubview(discountCostLabel)
+        scrollView.addSubview(costLabel)
+        scrollView.addSubview(line)
+        scrollView.addSubview(descriptionLabel)
+        scrollView.addSubview(noticeLabel)
+        view.addSubview(scrollView)
         view.addSubview(closeButton)
+        
+        scrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
         
         imageSlider.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(375)
+            $0.height.equalTo(400)
         }
         
         closeButton.snp.makeConstraints {
             $0.top.trailing.equalToSuperview().inset(16)
             $0.width.height.equalTo(40)
+        }
+        
+        sellerLabel.snp.makeConstraints {
+            $0.top.equalTo(imageSlider.snp.bottom).offset(30)
+            $0.leading.trailing.equalToSuperview().inset(26)
+        }
+        
+        titleLabel.snp.makeConstraints {
+            $0.top.equalTo(sellerLabel.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(26)
+            $0.width.equalToSuperview().inset(26)
+        }
+        
+        discountRateLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(32)
+            $0.leading.equalToSuperview().inset(28)
+        }
+        
+        discountCostLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(32)
+            $0.leading.equalTo(discountRateLabel.snp.trailing).offset(10)
+        }
+        
+        costLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(32)
+            $0.leading.equalTo(discountCostLabel.snp.trailing).offset(10)
+        }
+        
+        line.snp.makeConstraints {
+            $0.top.equalTo(discountRateLabel.snp.bottom).offset(32)
+            $0.leading.trailing.equalToSuperview().inset(18)
+            $0.height.equalTo(1)
+        }
+        
+        descriptionLabel.snp.makeConstraints {
+            $0.top.equalTo(line.snp.bottom).offset(24)
+            $0.leading.trailing.equalToSuperview().inset(33)
+        }
+        
+        noticeLabel.snp.makeConstraints {
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(40)
+            $0.leading.trailing.equalToSuperview().inset(33)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(327)
+            $0.height.equalTo(96)
+            $0.bottom.equalToSuperview().inset(122)
         }
     }
 }
@@ -87,20 +213,34 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
 extension Reactive where Base: ProductDetailViewController {
     var setData: Binder<DetailData> {
         return Binder(base) { base, data in
-            base.imageSlider.contentSize = CGSize(width: base.view.frame.width * CGFloat(data.thumbnailList.count), height: 375)
-            
+            base.imageSlider.contentSize = CGSize(width: base.view.frame.width * CGFloat(data.thumbnailList.count), height: 400)
             for i in 0..<data.thumbnailList.count {
                 let imageView = UIImageView()
                 imageView.kf.setImage(with: URL(string: data.thumbnailList[i]))
                 base.imageSlider.addSubview(imageView)
-                
                 imageView.snp.makeConstraints {
                     $0.top.width.equalToSuperview()
                     $0.leading.equalTo(base.view.frame.width * CGFloat(i))
-                    $0.height.equalTo(375)
+                    $0.height.equalTo(400)
                 }
             }
             
+            base.sellerLabel.text = data.seller
+            base.titleLabel.text = data.title
+            base.descriptionLabel.text = data.description
+            base.discountRateLabel.text = "-\(data.discount_rate)"
+            base.discountCostLabel.text = data.discount_cost
+            
+            let cost = NSMutableAttributedString(string: data.cost)
+            cost.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: NSMakeRange(0, cost.length))
+            base.costLabel.attributedText = cost
+            
+            if data.discount_rate == "" {
+                base.discountRateLabel.text = data.cost
+                base.discountRateLabel.textColor = UIColor(displayP3Red: (20/255), green: (20/255), blue: (40/255), alpha: 1)
+                base.discountCostLabel.text = ""
+                base.costLabel.text = ""
+            }
         }
     }
 }

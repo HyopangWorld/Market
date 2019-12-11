@@ -3,6 +3,7 @@ PODS:
   - Kingfisher (5.11.0):
     - Kingfisher/Core (= 5.11.0)
   - Kingfisher/Core (5.11.0)
+  - KRWordWrapLabel (2.1.1)
   - RxAppState (1.6.0):
     - RxCocoa (~> 5.0)
     - RxSwift (~> 5.0)
@@ -25,6 +26,7 @@ PODS:
 
 DEPENDENCIES:
   - Kingfisher (~> 5.11.0)
+  - KRWordWrapLabel (~> 2.1.1)
   - RxAppState
   - RxCocoa (~> 5)
   - RxDataSources (~> 4.0)
@@ -38,6 +40,7 @@ SPEC REPOS:
   trunk:
     - Differentiator
     - Kingfisher
+    - KRWordWrapLabel
     - RxAppState
     - RxCocoa
     - RxDataSources
@@ -51,6 +54,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Differentiator: 886080237d9f87f322641dedbc5be257061b0602
   Kingfisher: 4569606189149e19c7d9439f47e885d0679b7a90
+  KRWordWrapLabel: ee5d4e55c16190d69a80d97f283dba150c4f479b
   RxAppState: b633d7370970ecb80081912ea08a7bf3eb644b4e
   RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
   RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
@@ -61,6 +65,6 @@ SPEC CHECKSUMS:
   Then: 90cd104fd951cec1980a03f57704ad8f784d4d79
   Toaster: c1a81b376edcc2470157b4d1ee1e9341d3b96455
 
-PODFILE CHECKSUM: 188aa98d0e4f5dac8014a59ac18de19f1644a9f0
+PODFILE CHECKSUM: e292b9e9cdf03229679d1d1f1403581fd0ad12a6
 
 COCOAPODS: 1.8.4
