@@ -38,7 +38,7 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
     let line = UIView()
     let descriptionLabel = UILabel()
     
-    let noticeLabel = UILabel()
+    let noticeView = UIView()
     let buyButton = UIButton()
     
     override func bind(_ viewModel: ProductDetailBindable) {
@@ -119,19 +119,33 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
         }
         
         descriptionLabel.do {
-            $0.font = .systemFont(ofSize: 16, weight: .medium)
+            $0.font = .systemFont(ofSize: 16, weight: .bold)
             $0.textColor = UIColor(displayP3Red: (20/255), green: (20/255), blue: (40/255), alpha: 1)
             $0.numberOfLines = 0
         }
         
-        noticeLabel.do {
+        noticeView.do {
             $0.backgroundColor = UIColor(displayP3Red: (246/255), green: (246/255), blue: (250/255), alpha: 1)
-            $0.layer.frame = CGRect(x: 0, y: 0, width: 96, height: 327)
-            $0.font = .systemFont(ofSize: 12, weight: .medium)
-            $0.textColor = UIColor(displayP3Red: (163/255), green: (163/255), blue: (181/255), alpha: 1)
-            $0.textAlignment = .center
-            $0.numberOfLines = 0
-            $0.text = "부랑구마켓은 통신판매중개자이며 통신판매의 당사자가 아닙니다. 따라서 부랑구마켓은 상품 거래정보 및 거래에 대하여 책임을 지지 않습니다."
+            $0.layer.cornerRadius = 15
+            let notice = UILabel()
+            notice.do {
+                $0.font = .systemFont(ofSize: 13, weight: .bold)
+                $0.textColor = UIColor(displayP3Red: (163/255), green: (163/255), blue: (181/255), alpha: 1)
+                $0.numberOfLines = 0
+                $0.text = "부랑구마켓은 통신판매중개자이며 통신판매의 당사자가 아닙니다. 따라서 부랑구마켓은 상품 거래정보 및 거래에 대하여 책임을 지지 않습니다."
+            }
+            noticeView.addSubview(notice)
+            notice.snp.makeConstraints {
+                $0.edges.equalToSuperview().inset(20)
+            }
+        }
+        
+        buyButton.do {
+            $0.backgroundColor = UIColor(displayP3Red: (255/255), green: (88/255), blue: (108/255), alpha: 1)
+            $0.layer.cornerRadius = 15
+            $0.setTitle("구매하기", for: .normal)
+            $0.titleLabel?.textColor = .white
+            $0.titleLabel?.font = .systemFont(ofSize: 18, weight: .bold)
         }
     }
     
@@ -144,9 +158,10 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
         scrollView.addSubview(costLabel)
         scrollView.addSubview(line)
         scrollView.addSubview(descriptionLabel)
-        scrollView.addSubview(noticeLabel)
+        scrollView.addSubview(noticeView)
         view.addSubview(scrollView)
         view.addSubview(closeButton)
+        view.addSubview(buyButton)
         
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -199,13 +214,19 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
             $0.leading.trailing.equalToSuperview().inset(33)
         }
         
-        noticeLabel.snp.makeConstraints {
+        noticeView.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(40)
             $0.leading.trailing.equalToSuperview().inset(33)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(327)
             $0.height.equalTo(96)
-            $0.bottom.equalToSuperview().inset(122)
+            $0.bottom.equalToSuperview().inset(80)
+        }
+        
+        buyButton.snp.makeConstraints {
+            $0.bottom.equalToSuperview().inset(30)
+            $0.leading.trailing.equalToSuperview().inset(33)
+            $0.height.equalTo(52)
         }
     }
 }
