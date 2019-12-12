@@ -18,7 +18,6 @@ target 'Market' do
   pod 'Toaster', '~> 2.2.0'
   pod 'Kingfisher', '~> 5.11.0'
   pod 'KRWordWrapLabel', '~> 2.1.1'
-  pod 'RxAnimated', '~> 0.6.1'
   
   # Other Swift Utilities
   pod 'Then', '~> 2.6.0'

@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double RxAnimatedVersionNumber;
-FOUNDATION_EXPORT const unsigned char RxAnimatedVersionString[];
+FOUNDATION_EXPORT double RxKingfisherVersionNumber;
+FOUNDATION_EXPORT const unsigned char RxKingfisherVersionString[];
 

@@ -29,7 +29,6 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
     let scrollView = UIScrollView()
     let imageSlider = UIScrollView()
     let closeButton = UIButton()
-    
     let sellerLabel = UILabel()
     let titleLabel = KRWordWrapLabel()
     let discountRateLabel = UILabel()
@@ -37,9 +36,10 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
     let discountCostLabel = UILabel()
     let line = UIView()
     let descriptionLabel = UILabel()
-    
     let noticeView = UIView()
     let buyButton = UIButton()
+    
+    let sliderImage = PublishSubject<Void>()
     
     override func bind(_ viewModel: ProductDetailBindable) {
         self.disposeBag = DisposeBag()
@@ -48,13 +48,6 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
             .take(1)
             .map { _ in viewModel.id }
             .bind(to: viewModel.viewWillAppear)
-            .disposed(by: disposeBag)
-        
-        self.rx.viewDidAppear
-            .subscribe(onNext: { _ in
-                print("animation")
-                
-            })
             .disposed(by: disposeBag)
         
         viewModel.productDetailData
@@ -68,6 +61,29 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
         closeButton.rx.controlEvent(.touchUpInside)
             .subscribe(onNext: {
                 self.dismiss(animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.productDetailData.asObservable()
+            .delay(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { _ in
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.buyButton.frame = self.buyButton.frame.offsetBy(dx: 0, dy: -85)
+                }, completion: { (_) in
+                    UIView.animate(withDuration: 0.2, animations: {
+                        self.buyButton.frame = self.buyButton.frame.offsetBy(dx: 0, dy: 3)
+                    }, completion: { (_) in
+                        UIView.animate(withDuration: 0.3, animations: {
+                            self.buyButton.frame = self.buyButton.frame.offsetBy(dx: 0, dy: -5)
+                        }, completion: { (_) in
+                            UIView.animate(withDuration: 0.1, animations: {
+                                self.buyButton.frame = self.buyButton.frame.offsetBy(dx: 0, dy: 3)
+                            }, completion: { (_) in
+                                
+                            })
+                        })
+                    })
+                })
             })
             .disposed(by: disposeBag)
     }
@@ -176,7 +192,7 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
         
         imageSlider.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(400)
+            $0.height.equalTo(430)
         }
         
         closeButton.snp.makeConstraints {
@@ -191,8 +207,7 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
         
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(sellerLabel.snp.bottom).offset(16)
-            $0.leading.trailing.equalToSuperview().inset(26)
-            $0.width.equalToSuperview().inset(26)
+            $0.leading.width.equalToSuperview().inset(26)
         }
         
         discountRateLabel.snp.makeConstraints {
@@ -241,7 +256,7 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
 extension Reactive where Base: ProductDetailViewController {
     var setData: Binder<DetailData> {
         return Binder(base) { base, data in
-            base.imageSlider.contentSize = CGSize(width: base.view.frame.width * CGFloat(data.thumbnailList.count), height: 400)
+            base.imageSlider.contentSize = CGSize(width: base.view.frame.width * CGFloat(data.thumbnailList.count), height: 430)
             for i in 0..<data.thumbnailList.count {
                 let imageView = UIImageView()
                 imageView.kf.setImage(with: URL(string: data.thumbnailList[i]))
@@ -249,7 +264,7 @@ extension Reactive where Base: ProductDetailViewController {
                 imageView.snp.makeConstraints {
                     $0.top.width.equalToSuperview()
                     $0.leading.equalTo(base.view.frame.width * CGFloat(i))
-                    $0.height.equalTo(400)
+                    $0.height.equalTo(430)
                 }
             }
             

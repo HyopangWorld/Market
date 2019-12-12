@@ -4,13 +4,6 @@ PODS:
     - Kingfisher/Core (= 5.11.0)
   - Kingfisher/Core (5.11.0)
   - KRWordWrapLabel (2.1.1)
-  - RxAnimated (0.6.1):
-    - RxAnimated/Core (= 0.6.1)
-    - RxCocoa (~> 5.0)
-    - RxSwift (~> 5.0)
-  - RxAnimated/Core (0.6.1):
-    - RxCocoa (~> 5.0)
-    - RxSwift (~> 5.0)
   - RxAppState (1.6.0):
     - RxCocoa (~> 5.0)
     - RxSwift (~> 5.0)
@@ -21,6 +14,10 @@ PODS:
     - Differentiator (~> 4.0)
     - RxCocoa (~> 5.0)
     - RxSwift (~> 5.0)
+  - RxKingfisher (1.0.0):
+    - Kingfisher (~> 5)
+    - RxCocoa (~> 5)
+    - RxSwift (~> 5)
   - RxOptional (4.1.0):
     - RxCocoa (~> 5)
     - RxSwift (~> 5)
@@ -32,12 +29,11 @@ PODS:
   - Toaster (2.2.0)
 
 DEPENDENCIES:
-  - Kingfisher (~> 5.11.0)
   - KRWordWrapLabel (~> 2.1.1)
-  - RxAnimated (~> 0.6.1)
   - RxAppState
   - RxCocoa (~> 5)
   - RxDataSources (~> 4.0)
+  - RxKingfisher (~> 1.0.0)
   - RxOptional (~> 4.1.0)
   - RxSwift (~> 5)
   - SnapKit (~> 5.0.1)
@@ -49,10 +45,10 @@ SPEC REPOS:
     - Differentiator
     - Kingfisher
     - KRWordWrapLabel
-    - RxAnimated
     - RxAppState
     - RxCocoa
     - RxDataSources
+    - RxKingfisher
     - RxOptional
     - RxRelay
     - RxSwift
@@ -64,10 +60,10 @@ SPEC CHECKSUMS:
   Differentiator: 886080237d9f87f322641dedbc5be257061b0602
   Kingfisher: 4569606189149e19c7d9439f47e885d0679b7a90
   KRWordWrapLabel: ee5d4e55c16190d69a80d97f283dba150c4f479b
-  RxAnimated: 0c7f4c2898c06aa069507813aa50a4d01cb52bce
   RxAppState: b633d7370970ecb80081912ea08a7bf3eb644b4e
   RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
   RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
+  RxKingfisher: 0f07678aca3e6a20143dfba67ec2d2c70d443a9a
   RxOptional: b1fcd60856807a564c0215c2184b8d33e7826dc2
   RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
   RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
@@ -75,6 +71,6 @@ SPEC CHECKSUMS:
   Then: 90cd104fd951cec1980a03f57704ad8f784d4d79
   Toaster: c1a81b376edcc2470157b4d1ee1e9341d3b96455
 
-PODFILE CHECKSUM: dd6ebe25b0d33b053e0edd2b7a451085d9d42047
+PODFILE CHECKSUM: db4b8a23261ff006dc5eca84f7525fac1a12f9dd
 
 COCOAPODS: 1.8.4
