@@ -25,10 +25,6 @@ struct ProductDetailViewModel: ProductDetailBindable {
             .asObservable()
             .share()
         
-        productDetailResult.asObservable()
-            .subscribe{ print("요기용") }
-            .disposed(by: disposeBag)
-        
         let productDetailValue = productDetailResult
             .map { result -> [Product]? in
                 guard case .success(let value) = result else {
@@ -47,12 +43,14 @@ struct ProductDetailViewModel: ProductDetailBindable {
             }
             .filterNil()
         
-        self.productDetailData = productDetailValue
+        self.productDetailData = Observable
+            .merge(productDetailValue)
             .map(model.pasrseData)
             .filterNil()
             .asSignal(onErrorSignalWith: .empty())
         
-        self.errorMessage = productDetailError
+        self.errorMessage = Observable
+            .merge(productDetailError)
             .asSignal(onErrorJustReturn: "잠시 후 다시 시도해 주세요")
     }
 }

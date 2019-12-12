@@ -50,6 +50,13 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
             .bind(to: viewModel.viewWillAppear)
             .disposed(by: disposeBag)
         
+        self.rx.viewDidAppear
+            .subscribe(onNext: { _ in
+                print("animation")
+                
+            })
+            .disposed(by: disposeBag)
+        
         viewModel.productDetailData
             .emit(to: self.rx.setData)
             .disposed(by: disposeBag)
@@ -129,7 +136,7 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
             $0.layer.cornerRadius = 15
             let notice = UILabel()
             notice.do {
-                $0.font = .systemFont(ofSize: 13, weight: .bold)
+                $0.font = .systemFont(ofSize: 14, weight: .bold)
                 $0.textColor = UIColor(displayP3Red: (163/255), green: (163/255), blue: (181/255), alpha: 1)
                 $0.numberOfLines = 0
                 $0.text = "부랑구마켓은 통신판매중개자이며 통신판매의 당사자가 아닙니다. 따라서 부랑구마켓은 상품 거래정보 및 거래에 대하여 책임을 지지 않습니다."
@@ -224,7 +231,7 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
         }
         
         buyButton.snp.makeConstraints {
-            $0.bottom.equalToSuperview().inset(30)
+            $0.bottom.equalToSuperview().inset(-52)
             $0.leading.trailing.equalToSuperview().inset(33)
             $0.height.equalTo(52)
         }
