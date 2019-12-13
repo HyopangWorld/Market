@@ -82,20 +82,21 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
                     }
                     self.thumbnailView.layer.cornerRadius = 5
                     self.thumbnailView.frame = self.thumbnailView.frame.offsetBy(dx: -viewModel.cell.origin.x, dy: -viewModel.cell.origin.y)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        UIView.animate(withDuration: 0.3, animations: {
+                            self.thumbnailView.transform = CGAffineTransform(scaleX: 2.165, y: 2.25)
+                        })
+                    }
                 }, completion: { _ in
-                    UIView.animate(withDuration: 0.3, animations: {
-                        self.thumbnailView.transform = CGAffineTransform(scaleX: 2.165, y: 2.25)
-                    }, completion: { _ in
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                            self.layout()
-                        }
-                    })
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        self.layout()
+                    }
                 })
         }
         .disposed(by: disposeBag)
         
         viewModel.productDetailData.asObservable()
-            .delay(RxTimeInterval.seconds(2), scheduler: MainScheduler.instance)
+            .delay(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(onNext: { _ in
                 UIView.animate(withDuration: 0.7, animations: {
                     self.buyButton.frame = self.buyButton.frame.offsetBy(dx: 0, dy: -85)
