@@ -15,10 +15,11 @@ import KRWordWrapLabel
 class ProductListCell: UICollectionViewCell {
     typealias Data = (id: Int, thumbnail_520: String, title: String, seller: String)
     
-    var id: Int?
     let productImageView = UIImageView()
     let titleLabel = KRWordWrapLabel()
     let sellerLabel = UILabel()
+    
+    var id: Int?
     var origin = CGPoint(x: 0, y: 0)
     
     override init(frame: CGRect) {

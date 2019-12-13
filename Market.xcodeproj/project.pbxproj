@@ -27,6 +27,7 @@
 		DD91EDC2239FAA2B00B433B7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD91EDC1239FAA2B00B433B7 /* ViewController.swift */; };
 		DD9D8863239505CE00565E61 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9D8862239505CE00565E61 /* Product.swift */; };
 		DD9D8865239508D600565E61 /* ProductsNetworkImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9D8864239508D600565E61 /* ProductsNetworkImpl.swift */; };
+		DDB1D55523A3688C00897F4F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB1D55423A3688C00897F4F /* Constants.swift */; };
 		DDCBE29B23A0AE020034029A /* Reactive+UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCBE29A23A0AE020034029A /* Reactive+UIViewController.swift */; };
 		DDE324D12394F8F500CC9C70 /* ProductListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE324D02394F8F500CC9C70 /* ProductListViewModel.swift */; };
 		DDE324D42394FD0000CC9C70 /* ProductsNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE324D32394FD0000CC9C70 /* ProductsNetwork.swift */; };
@@ -81,6 +82,7 @@
 		DD91EDC1239FAA2B00B433B7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DD9D8862239505CE00565E61 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		DD9D8864239508D600565E61 /* ProductsNetworkImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsNetworkImpl.swift; sourceTree = "<group>"; };
+		DDB1D55423A3688C00897F4F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DDCBE29A23A0AE020034029A /* Reactive+UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reactive+UIViewController.swift"; sourceTree = "<group>"; };
 		DDE324D02394F8F500CC9C70 /* ProductListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewModel.swift; sourceTree = "<group>"; };
 		DDE324D32394FD0000CC9C70 /* ProductsNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsNetwork.swift; sourceTree = "<group>"; };
@@ -186,7 +188,7 @@
 		DD5A0EB62394F71A007F222B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				DD785E402395E68500CB76B9 /* Commons */,
+				DD91EDC1239FAA2B00B433B7 /* ViewController.swift */,
 				DD785E432395E81F00CB76B9 /* List */,
 				DD785E442395E82D00CB76B9 /* Detail */,
 			);
@@ -217,14 +219,6 @@
 				DD5A0E8F2394F602007F222B /* Assets.xcassets */,
 			);
 			path = Resource;
-			sourceTree = "<group>";
-		};
-		DD785E402395E68500CB76B9 /* Commons */ = {
-			isa = PBXGroup;
-			children = (
-				DD91EDC1239FAA2B00B433B7 /* ViewController.swift */,
-			);
-			path = Commons;
 			sourceTree = "<group>";
 		};
 		DD785E432395E81F00CB76B9 /* List */ = {
@@ -262,6 +256,7 @@
 			children = (
 				DD5A0EB62394F71A007F222B /* Views */,
 				DD5A0EB72394F722007F222B /* Models */,
+				DDB1D55323A367A500897F4F /* Constants */,
 				DD9D885C2394FEF600565E61 /* Network */,
 				DD91EDBE239FA14200B433B7 /* Extension */,
 				DD5A0E862394F601007F222B /* AppDelegate.swift */,
@@ -277,6 +272,14 @@
 				DD9D8864239508D600565E61 /* ProductsNetworkImpl.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		DDB1D55323A367A500897F4F /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				DDB1D55423A3688C00897F4F /* Constants.swift */,
+			);
+			path = Constants;
 			sourceTree = "<group>";
 		};
 		F4843C2552A404EC20FA9E6A /* Pods */ = {
@@ -531,6 +534,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD91EDC2239FAA2B00B433B7 /* ViewController.swift in Sources */,
+				DDB1D55523A3688C00897F4F /* Constants.swift in Sources */,
 				DD785E422395E7D500CB76B9 /* ProductListModel.swift in Sources */,
 				DDE324D12394F8F500CC9C70 /* ProductListViewModel.swift in Sources */,
 				DD9D8863239505CE00565E61 /* Product.swift in Sources */,

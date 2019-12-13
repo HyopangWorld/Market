@@ -26,7 +26,6 @@ protocol ProductListViewBindable {
 class ProductListViewController: ViewController<ProductListViewBindable> {
     var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private var indicator = UIImageView()
-    private var windowHeight: CGFloat = 0
     private var page = 1
     
     override func bind(_ viewModel: ProductListViewBindable) {
@@ -62,7 +61,10 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
         collectionView.rx.contentOffset
             .skipUntil(viewModel.reloadList.asObservable())
             .filter { offset -> Bool in
-                let height = self.collectionView.collectionViewLayout.collectionViewContentSize.height - self.collectionView.frame.height + self.windowHeight
+                var height = self.collectionView.collectionViewLayout.collectionViewContentSize.height
+                    - self.collectionView.frame.height
+                    + (MarketUI.safeAreaInsetsTop == 20 ? 0 : MarketUI.safeAreaInsetsTop) // edge가 없으면 0으로 값을 잡는다.
+                
                 return Int(offset.y - height) == 0
             }
             .map{ Int($0.y) }
@@ -79,8 +81,8 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
             .subscribe { event in
                 guard let indexpath = event.element else { return }
                 guard let cell = (self.collectionView.cellForItem(at: indexpath) as? ProductListCell) else { return }
-                let x = cell.frame.origin.x + 12 - 114
-                let y = cell.frame.origin.y + self.windowHeight - 119 - self.collectionView.contentOffset.y
+                let x = cell.frame.origin.x + 12
+                let y = cell.frame.origin.y + MarketUI.safeAreaInsetsTop - self.collectionView.contentOffset.y
                 cell.origin = CGPoint(x: x, y: y)
                 
                 let detailViewController = ProductDetailViewController()
@@ -165,13 +167,10 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
     override func layout(){
         collectionView.addSubview(indicator)
         view.addSubview(collectionView)
-        
-        windowHeight = (UIApplication.shared.windows.first { $0.isKeyWindow })?.safeAreaInsets.top ?? 0
-        let height = navigationController!.navigationBar.bounds.height + windowHeight
-        windowHeight = windowHeight == 20 ? 0 : windowHeight
-        
+         
+        let collectionHeight = navigationController!.navigationBar.bounds.height + MarketUI.safeAreaInsetsTop
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(height)
+            $0.top.equalTo(collectionHeight)
             $0.leading.equalToSuperview().offset(12)
             $0.trailing.equalToSuperview().inset(12)
             $0.bottom.equalToSuperview()

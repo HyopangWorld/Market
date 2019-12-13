@@ -21,6 +21,7 @@ typealias DetailData = (id: Int, thumbnail_720: String, thumbnailList: [String],
 protocol ProductDetailBindable {
     var cell: ProductListCell { get }
     var viewWillAppear: PublishRelay<Int> { get }
+    
     var productDetailData: Signal<DetailData> { get }
     var errorMessage: Signal<String> { get }
 }
@@ -39,8 +40,6 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
     let descriptionLabel = UILabel()
     let noticeView = UIView()
     let buyButton = UIButton()
-    
-    let sliderImage = PublishSubject<Void>()
     
     override func viewDidLoad() {
         attribute()
@@ -73,6 +72,7 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
         viewModel.productDetailData.asObservable()
             .subscribe { _ in
                 self.view.addSubview(self.thumbnailView)
+                
                 UIView.animate(withDuration: 0.3, animations: {
                     self.thumbnailView.snp.makeConstraints {
                         $0.width.equalTo(viewModel.cell.productImageView.bounds.size.width)
@@ -80,8 +80,8 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
                         $0.leading.equalToSuperview().inset(111.7)
                         $0.top.equalToSuperview().inset(119.7)
                     }
-                    self.thumbnailView.layer.cornerRadius = 5
-                    self.thumbnailView.frame = self.thumbnailView.frame.offsetBy(dx: -viewModel.cell.origin.x, dy: -viewModel.cell.origin.y)
+                    self.thumbnailView.frame = self.thumbnailView.frame.offsetBy(dx: -(viewModel.cell.origin.x - 111.7),
+                                                                                 dy: -(viewModel.cell.origin.y - 119.7))
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         UIView.animate(withDuration: 0.3, animations: {
                             self.thumbnailView.transform = CGAffineTransform(scaleX: 2.165, y: 2.25)
