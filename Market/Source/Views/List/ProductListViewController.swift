@@ -67,7 +67,7 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
             }
             .map{ Int($0.y) }
             .distinct()
-            .delay(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
+            .delay(RxTimeInterval.seconds(3), scheduler: MainScheduler.instance)
             .map { y -> Int in
                 self.page += 1
                 return self.page

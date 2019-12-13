@@ -43,7 +43,7 @@ class ProductListCell: UICollectionViewCell {
         }
         
         productImageView.do {
-            $0.kf.setImage(with: URL(string: data.thumbnail_520))
+            $0.kf.setImage(with: URL(string: data.thumbnail_520), placeholder: UIImage(named: "placeholder"))
             $0.snp.updateConstraints {
                 $0.top.leading.trailing.equalToSuperview()
                 $0.width.equalToSuperview()

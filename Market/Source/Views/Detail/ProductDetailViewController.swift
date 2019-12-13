@@ -293,11 +293,11 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
 extension Reactive where Base: ProductDetailViewController {
     var setData: Binder<DetailData> {
         return Binder(base) { base, data in
-            base.thumbnailView.kf.setImage(with: URL(string: data.thumbnail_720))
+            base.thumbnailView.kf.setImage(with: URL(string: data.thumbnail_720), placeholder: UIImage(named: "placeholder"))
             base.imageSlider.contentSize = CGSize(width: base.view.frame.width * CGFloat(data.thumbnailList.count), height: 430)
             for i in 0..<data.thumbnailList.count {
                 let imageView = UIImageView()
-                imageView.kf.setImage(with: URL(string: data.thumbnailList[i]))
+                imageView.kf.setImage(with: URL(string: data.thumbnailList[i]), placeholder: UIImage(named: "placeholder"))
                 base.imageSlider.addSubview(imageView)
                 imageView.snp.makeConstraints {
                     $0.top.width.equalToSuperview()
