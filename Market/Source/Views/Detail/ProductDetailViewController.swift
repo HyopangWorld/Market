@@ -26,6 +26,7 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
     let scrollView = UIScrollView()
     let thumbnailView = UIImageView()
     let imageSlider = UIScrollView()
+    let progressView = UIProgressView()
     let closeButton = UIButton()
     let sellerLabel = UILabel()
     let titleLabel = KRWordWrapLabel()
@@ -111,6 +112,14 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
                 })
             })
             .disposed(by: disposeBag)
+        
+        imageSlider.rx.contentOffset
+            .map { $0.x / self.imageSlider.frame.width }
+            .subscribe {
+                let value = Float($0.element! + 1) / Float(self.imageSlider.subviews.filter{ $0 is UIImageView }.count)
+                self.progressView.setProgress(value, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     override func attribute() {
@@ -128,8 +137,14 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
         
         imageSlider.do {
             $0.isPagingEnabled = true
-            $0.showsVerticalScrollIndicator = false
             $0.bounces = false
+            $0.showsHorizontalScrollIndicator = false
+        }
+        
+        progressView.do {
+            $0.progressTintColor = .white
+            $0.trackTintColor = UIColor(displayP3Red: 0, green: 0, blue: (10/255), alpha: 0.36)
+            $0.setProgress(0, animated: true)
         }
         
         closeButton.do {
@@ -207,6 +222,7 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
     
     override func layout() {
         scrollView.addSubview(imageSlider)
+        scrollView.addSubview(progressView)
         scrollView.addSubview(sellerLabel)
         scrollView.addSubview(titleLabel)
         scrollView.addSubview(discountRateLabel)
@@ -226,6 +242,11 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
         imageSlider.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.height.equalTo(430)
+        }
+        
+        progressView.snp.makeConstraints {
+            $0.bottom.leading.trailing.equalTo(imageSlider).inset(24)
+            $0.height.equalTo(4)
         }
         
         closeButton.snp.makeConstraints {
@@ -301,6 +322,7 @@ extension Reactive where Base: ProductDetailViewController {
                     $0.height.equalTo(430)
                 }
             }
+            base.progressView.setProgress(1.0/Float(data.thumbnailList.count), animated: true)
             
             base.sellerLabel.text = data.seller
             base.titleLabel.text = data.title
