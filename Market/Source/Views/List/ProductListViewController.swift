@@ -37,36 +37,6 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
             .bind(to: viewModel.viewWillAppear)
             .disposed(by: disposeBag)
         
-        collectionView.rx.contentOffset
-            .skipUntil(viewModel.reloadList.asObservable())
-            .filter { offset -> Bool in
-                let height = self.collectionView.collectionViewLayout.collectionViewContentSize.height - self.collectionView.frame.height + self.windowHeight
-                return Int(offset.y - height) == 0
-            }
-            .map{ Int($0.y) }
-            .distinct()
-            .map { y -> Int in
-                self.indicator.startAnimating()
-                self.page += 1
-                return self.page
-            }
-            .bind(to: viewModel.viewWillFetch)
-            .disposed(by: disposeBag)
-        
-        collectionView.rx.itemSelected
-            .subscribe { event in
-                guard let indexpath = event.element else { return }
-                guard let cell = self.collectionView.cellForItem(at: indexpath) else { return }
-                guard let id = (cell as! ProductListCell).id else { return }
-                
-                let detailViewController = ProductDetailViewController()
-                let detailViewModel = ProductDetailViewModel(id: id)
-                detailViewController.bind(detailViewModel)
-                
-                self.present(detailViewController, animated: true, completion: nil)
-            }
-            .disposed(by: disposeBag)
-        
         viewModel.cellData
             .drive(collectionView.rx.items) { collection, row, data in
                 let index = IndexPath(row: row, section: 0)
@@ -86,6 +56,38 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
         viewModel.errorMessage
             .emit(to: self.rx.toast())
             .disposed(by: disposeBag)
+        
+        collectionView.rx.contentOffset
+            .skipUntil(viewModel.reloadList.asObservable())
+            .filter { offset -> Bool in
+                let height = self.collectionView.collectionViewLayout.collectionViewContentSize.height - self.collectionView.frame.height + self.windowHeight
+                return Int(offset.y - height) == 0
+            }
+            .map{ Int($0.y) }
+            .distinct()
+            .map { y -> Int in
+                self.indicator.startAnimating()
+                self.page += 1
+                return self.page
+            }
+            .bind(to: viewModel.viewWillFetch)
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.itemSelected
+            .subscribe { event in
+                guard let indexpath = event.element else { return }
+                guard let cell = (self.collectionView.cellForItem(at: indexpath) as? ProductListCell) else { return }
+                let x = cell.frame.origin.x + 12 - 114
+                let y = cell.frame.origin.y + self.windowHeight - 119 - self.collectionView.contentOffset.y
+                cell.origin = CGPoint(x: x, y: y)
+                
+                let detailViewController = ProductDetailViewController()
+                let detailViewModel = ProductDetailViewModel(cell: cell)
+                detailViewController.bind(detailViewModel)
+                
+                self.present(detailViewController, animated: false, completion: nil)
+            }
+            .disposed(by: disposeBag)
     }
     
     override func attribute() {
@@ -104,11 +106,9 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
         navigationController?.navigationBar.standardAppearance = navAppearance
         
         let titleImg = UIImageView(image: UIImage(named: "baseline_storefront_black.png"))
+        titleImg.tintColor = .black
         navigationController?.navigationBar.addSubview(titleImg)
-        
         titleImg.snp.makeConstraints {
-            $0.width.equalTo(25)
-            $0.height.equalTo(24)
             $0.centerX.centerY.equalToSuperview()
         }
         

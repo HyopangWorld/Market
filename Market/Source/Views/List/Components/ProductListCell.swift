@@ -19,6 +19,7 @@ class ProductListCell: UICollectionViewCell {
     let productImageView = UIImageView()
     let titleLabel = KRWordWrapLabel()
     let sellerLabel = UILabel()
+    var origin = CGPoint(x: 0, y: 0)
     
     override init(frame: CGRect) {
         super.init(frame: frame)

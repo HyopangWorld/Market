@@ -19,7 +19,7 @@ typealias DetailData = (id: Int, thumbnail_720: String, thumbnailList: [String],
     cost: String, discount_cost: String, discount_rate: String, description: String)
 
 protocol ProductDetailBindable {
-    var id: Int { get }
+    var cell: ProductListCell { get }
     var viewWillAppear: PublishRelay<Int> { get }
     var productDetailData: Signal<DetailData> { get }
     var errorMessage: Signal<String> { get }
@@ -27,6 +27,7 @@ protocol ProductDetailBindable {
 
 class ProductDetailViewController: ViewController<ProductDetailBindable> {
     let scrollView = UIScrollView()
+    let thumbnailView = UIImageView()
     let imageSlider = UIScrollView()
     let closeButton = UIButton()
     let sellerLabel = UILabel()
@@ -41,12 +42,17 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
     
     let sliderImage = PublishSubject<Void>()
     
+    override func viewDidLoad() {
+        attribute()
+    }
+    
     override func bind(_ viewModel: ProductDetailBindable) {
         self.disposeBag = DisposeBag()
         
         self.rx.viewWillAppear
             .take(1)
-            .map { _ in viewModel.id }
+            .map { _ in viewModel.cell.id }
+            .filterNil()
             .bind(to: viewModel.viewWillAppear)
             .disposed(by: disposeBag)
         
@@ -65,21 +71,43 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
             .disposed(by: disposeBag)
         
         viewModel.productDetailData.asObservable()
-            .delay(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
+            .subscribe { _ in
+                self.view.addSubview(self.thumbnailView)
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.thumbnailView.snp.makeConstraints {
+                        $0.width.equalTo(viewModel.cell.productImageView.bounds.size.width)
+                        $0.height.equalTo(viewModel.cell.productImageView.bounds.size.height)
+                        $0.leading.equalToSuperview().inset(111.7)
+                        $0.top.equalToSuperview().inset(119.7)
+                    }
+                    self.thumbnailView.layer.cornerRadius = 5
+                    self.thumbnailView.frame = self.thumbnailView.frame.offsetBy(dx: -viewModel.cell.origin.x, dy: -viewModel.cell.origin.y)
+                }, completion: { _ in
+                    UIView.animate(withDuration: 0.5, animations: {
+                        self.thumbnailView.transform = CGAffineTransform(scaleX: 2.165, y: 2.25)
+                    }, completion: { _ in
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                            self.layout()
+                        }
+                    })
+                })
+        }
+        .disposed(by: disposeBag)
+        
+        viewModel.productDetailData.asObservable()
+            .delay(RxTimeInterval.seconds(2), scheduler: MainScheduler.instance)
             .subscribe(onNext: { _ in
-                UIView.animate(withDuration: 0.5, animations: {
+                UIView.animate(withDuration: 0.7, animations: {
                     self.buyButton.frame = self.buyButton.frame.offsetBy(dx: 0, dy: -85)
                 }, completion: { (_) in
-                    UIView.animate(withDuration: 0.2, animations: {
+                    UIView.animate(withDuration: 0.3, animations: {
                         self.buyButton.frame = self.buyButton.frame.offsetBy(dx: 0, dy: 3)
                     }, completion: { (_) in
-                        UIView.animate(withDuration: 0.3, animations: {
+                        UIView.animate(withDuration: 0.4, animations: {
                             self.buyButton.frame = self.buyButton.frame.offsetBy(dx: 0, dy: -5)
                         }, completion: { (_) in
-                            UIView.animate(withDuration: 0.1, animations: {
+                            UIView.animate(withDuration: 0.3, animations: {
                                 self.buyButton.frame = self.buyButton.frame.offsetBy(dx: 0, dy: 3)
-                            }, completion: { (_) in
-                                
                             })
                         })
                     })
@@ -89,8 +117,16 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
     }
     
     override func attribute() {
+        view.backgroundColor = .black
+        
         scrollView.do {
             $0.backgroundColor = .white
+            $0.showsVerticalScrollIndicator = false
+        }
+        
+        thumbnailView.do {
+            $0.layer.cornerRadius = 14
+            $0.layer.masksToBounds = true
         }
         
         imageSlider.do {
@@ -256,6 +292,7 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
 extension Reactive where Base: ProductDetailViewController {
     var setData: Binder<DetailData> {
         return Binder(base) { base, data in
+            base.thumbnailView.kf.setImage(with: URL(string: data.thumbnail_720))
             base.imageSlider.contentSize = CGSize(width: base.view.frame.width * CGFloat(data.thumbnailList.count), height: 430)
             for i in 0..<data.thumbnailList.count {
                 let imageView = UIImageView()
