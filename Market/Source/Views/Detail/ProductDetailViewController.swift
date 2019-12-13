@@ -9,10 +9,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import RxAppState
-import RxDataSources
-import SnapKit
-import Then
 import KRWordWrapLabel
 
 typealias DetailData = (id: Int, thumbnail_720: String, thumbnailList: [String], title: String, seller: String,
@@ -96,7 +92,7 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
         .disposed(by: disposeBag)
         
         viewModel.productDetailData.asObservable()
-            .delay(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
+            .delay(RxTimeInterval.milliseconds(1500), scheduler: MainScheduler.instance)
             .subscribe(onNext: { _ in
                 UIView.animate(withDuration: 0.7, animations: {
                     self.buyButton.frame = self.buyButton.frame.offsetBy(dx: 0, dy: -85)

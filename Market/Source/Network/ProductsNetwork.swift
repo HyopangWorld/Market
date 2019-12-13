@@ -7,7 +7,6 @@
 //
 
 import Foundation
-
 import RxSwift
 
 enum ProductsNetworkError: Error {

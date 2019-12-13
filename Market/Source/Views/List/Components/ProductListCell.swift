@@ -7,8 +7,6 @@
 //
 
 import UIKit
-
-import SnapKit
 import Kingfisher
 import KRWordWrapLabel
 

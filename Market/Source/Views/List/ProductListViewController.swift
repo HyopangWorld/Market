@@ -61,7 +61,7 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
         collectionView.rx.contentOffset
             .skipUntil(viewModel.reloadList.asObservable())
             .filter { offset -> Bool in
-                var height = self.collectionView.collectionViewLayout.collectionViewContentSize.height
+                let height = self.collectionView.collectionViewLayout.collectionViewContentSize.height
                     - self.collectionView.frame.height
                     + (MarketUI.safeAreaInsetsTop == 20 ? 0 : MarketUI.safeAreaInsetsTop) // edge가 없으면 0으로 값을 잡는다.
                 
