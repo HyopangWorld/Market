@@ -69,19 +69,20 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
         viewModel.productDetailData.asObservable()
             .subscribe { _ in
                 self.view.addSubview(self.thumbnailView)
-                
                 UIView.animate(withDuration: 0.3, animations: {
+                    let x = (self.view.frame.width - viewModel.cell.frame.width) / 2
                     self.thumbnailView.snp.makeConstraints {
                         $0.width.equalTo(viewModel.cell.productImageView.bounds.size.width)
                         $0.height.equalTo(viewModel.cell.productImageView.bounds.size.height)
-                        $0.leading.equalToSuperview().inset(111.7)
-                        $0.top.equalToSuperview().inset(119.7)
+                        $0.leading.equalToSuperview().inset(x)
+                        $0.top.equalToSuperview().inset(x)
                     }
-                    self.thumbnailView.frame = self.thumbnailView.frame.offsetBy(dx: -(viewModel.cell.origin.x - 111.7),
-                                                                                 dy: -(viewModel.cell.origin.y - 119.7))
+                    self.thumbnailView.frame = self.thumbnailView.frame.offsetBy(dx: -(viewModel.cell.origin.x - x),
+                                                                                 dy: -(viewModel.cell.origin.y - x))
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         UIView.animate(withDuration: 0.3, animations: {
-                            self.thumbnailView.transform = CGAffineTransform(scaleX: 2.165, y: 2.25)
+                            self.thumbnailView.transform = CGAffineTransform(scaleX: self.view.frame.width/viewModel.cell.frame.width,
+                                                                             y: self.view.frame.width/viewModel.cell.frame.width)
                         })
                     }
                 }, completion: { _ in
@@ -241,7 +242,7 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
         
         imageSlider.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(430)
+            $0.height.equalTo(view.frame.width)
         }
         
         progressView.snp.makeConstraints {
@@ -311,15 +312,14 @@ extension Reactive where Base: ProductDetailViewController {
     var setData: Binder<DetailData> {
         return Binder(base) { base, data in
             base.thumbnailView.kf.setImage(with: URL(string: data.thumbnail_720), placeholder: UIImage(named: "placeholder"))
-            base.imageSlider.contentSize = CGSize(width: base.view.frame.width * CGFloat(data.thumbnailList.count), height: 430)
+            base.imageSlider.contentSize = CGSize(width: base.view.frame.width * CGFloat(data.thumbnailList.count), height: base.view.frame.width)
             for i in 0..<data.thumbnailList.count {
                 let imageView = UIImageView()
                 imageView.kf.setImage(with: URL(string: data.thumbnailList[i]), placeholder: UIImage(named: "placeholder"))
                 base.imageSlider.addSubview(imageView)
                 imageView.snp.makeConstraints {
-                    $0.top.width.equalToSuperview()
+                    $0.top.width.height.equalToSuperview()
                     $0.leading.equalTo(base.view.frame.width * CGFloat(i))
-                    $0.height.equalTo(430)
                 }
             }
             base.progressView.setProgress(1.0/Float(data.thumbnailList.count), animated: true)
