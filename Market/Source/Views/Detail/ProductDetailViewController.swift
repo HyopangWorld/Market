@@ -83,7 +83,7 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
                     self.thumbnailView.layer.cornerRadius = 5
                     self.thumbnailView.frame = self.thumbnailView.frame.offsetBy(dx: -viewModel.cell.origin.x, dy: -viewModel.cell.origin.y)
                 }, completion: { _ in
-                    UIView.animate(withDuration: 0.5, animations: {
+                    UIView.animate(withDuration: 0.3, animations: {
                         self.thumbnailView.transform = CGAffineTransform(scaleX: 2.165, y: 2.25)
                     }, completion: { _ in
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {

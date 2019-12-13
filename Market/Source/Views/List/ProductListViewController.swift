@@ -25,7 +25,7 @@ protocol ProductListViewBindable {
 
 class ProductListViewController: ViewController<ProductListViewBindable> {
     var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    private var indicator = UIActivityIndicatorView()
+    private var indicator = UIImageView()
     private var windowHeight: CGFloat = 0
     private var page = 1
     
@@ -48,7 +48,9 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
         
         viewModel.reloadList
             .emit(onNext: { [weak self] _ in
-                self?.indicator.stopAnimating()
+                self?.indicator.snp.updateConstraints {
+                    $0.bottom.equalToSuperview().offset((self?.collectionView.collectionViewLayout.collectionViewContentSize.height ?? 0) - 20)
+                }
                 self?.collectionView.reloadData()
             })
             .disposed(by: disposeBag)
@@ -65,8 +67,8 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
             }
             .map{ Int($0.y) }
             .distinct()
+            .delay(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
             .map { y -> Int in
-                self.indicator.startAnimating()
                 self.page += 1
                 return self.page
             }
@@ -133,16 +135,35 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
         }
         
         indicator.do {
-            $0.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-            $0.center = view.center
-            $0.hidesWhenStopped = true
-            $0.style = .large
+            $0.image = UIImage(named: "outline_explore_black.png")
+            $0.tintColor = UIColor(displayP3Red: (171/255), green: (171/255), blue: (196/255), alpha: 1)
+            $0.layer.masksToBounds = true
+            
+            let animationGroup = CAAnimationGroup()
+            animationGroup.duration = 1.5
+            animationGroup.repeatCount = .infinity
+
+            let pulseAnimation = CABasicAnimation(keyPath: "transform.rotation")
+            pulseAnimation.toValue = 0.0
+            pulseAnimation.fromValue = -Double.pi * 2
+            pulseAnimation.duration = 0.2
+            pulseAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
+            
+            let pulseAnimation2 = CABasicAnimation(keyPath: "transform.rotation")
+            pulseAnimation2.toValue = 0.0
+            pulseAnimation2.fromValue = -Double.pi * 2
+            pulseAnimation2.duration = 0.5
+            pulseAnimation2.timingFunction = CAMediaTimingFunction(name: .easeOut)
+
+            animationGroup.animations = [pulseAnimation2, pulseAnimation]
+            
+            $0.layer.add(animationGroup, forKey: nil)
         }
     }
     
     override func layout(){
+        collectionView.addSubview(indicator)
         view.addSubview(collectionView)
-        view.addSubview(indicator)
         
         windowHeight = (UIApplication.shared.windows.first { $0.isKeyWindow })?.safeAreaInsets.top ?? 0
         let height = navigationController!.navigationBar.bounds.height + windowHeight
@@ -156,8 +177,9 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
         }
         
         indicator.snp.makeConstraints {
-            $0.bottom.equalTo(collectionView.snp.bottom).inset(50)
+            $0.bottom.equalToSuperview()
             $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(23)
         }
     }
 }
