@@ -132,6 +132,7 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
             $0.backgroundColor = .white
             $0.register(ProductListCell.self, forCellWithReuseIdentifier: String(describing:ProductListCell.self))
             $0.setCollectionViewLayout(layout, animated: true)
+            $0.showsVerticalScrollIndicator = false
         }
         
         indicator.do {

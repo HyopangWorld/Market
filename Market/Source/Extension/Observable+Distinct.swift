@@ -9,7 +9,6 @@
 import RxSwift
 
 extension Observable where Element: Hashable {
-
    func distinct() -> Observable<Element> {
       var set = Set<Element>()
       return flatMap { element -> Observable<Element> in

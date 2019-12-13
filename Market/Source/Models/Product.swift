@@ -37,5 +37,3 @@ struct Product: Codable {
         self.thumbnailList = list?.split(separator: "#").map{ String($0) }
     }
 }
-
-

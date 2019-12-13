@@ -10,8 +10,6 @@ import UIKit
 import RxSwift
 
 /*
- 사용자에게 보여지는 부분이며 많은 코드가 작성되어 있는 부분입니다. 또한 특정 기능의 기준 역시 화면이기에 좋고 효율적인 Presentation의 구조가 효율적인 Test Code의 기반이라고 생각합니다.
- 
  - `ViewBindable`:
  `UIViewController`에 bind 할 수 있는 명세를 나타내며, **protocol**로 작성되어야만 합니다.
  */
