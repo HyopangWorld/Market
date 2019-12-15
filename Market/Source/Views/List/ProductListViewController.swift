@@ -84,8 +84,8 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
                 cell.origin = CGPoint(x: x, y: y)
                 
                 let detailViewController = ProductDetailViewController()
-                let detailViewModel = ProductDetailViewModel(cell: cell)
-                detailViewController.bind(detailViewModel)
+                let detailViewModel = ProductDetailViewModel()
+                detailViewController.bind(detailViewModel, cell: cell)
                 
                 self.present(detailViewController, animated: false, completion: nil)
             }

@@ -12,14 +12,11 @@ import RxCocoa
 struct ProductDetailViewModel: ProductDetailBindable {
     let disposeBag = DisposeBag()
     
-    let cell: ProductListCell
     let viewWillAppear = PublishRelay<Int>()
     let productDetailData: Signal<DetailData>
     let errorMessage: Signal<String>
     
-    init(model: ProductDetailModel = ProductDetailModel(), cell: ProductListCell) {
-        self.cell = cell
-        
+    init(model: ProductDetailModel = ProductDetailModel()) {
         let productDetailResult = viewWillAppear
             .flatMap(model.getProductDetail)
             .asObservable()

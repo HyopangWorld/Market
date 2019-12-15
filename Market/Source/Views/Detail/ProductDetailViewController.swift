@@ -15,7 +15,6 @@ typealias DetailData = (id: Int, thumbnail_720: String, thumbnailList: [String],
     cost: String, discount_cost: String, discount_rate: String, description: String)
 
 protocol ProductDetailBindable {
-    var cell: ProductListCell { get }
     var viewWillAppear: PublishRelay<Int> { get }
     var productDetailData: Signal<DetailData> { get }
     var errorMessage: Signal<String> { get }
@@ -41,12 +40,12 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
         attribute()
     }
     
-    override func bind(_ viewModel: ProductDetailBindable) {
+    func bind(_ viewModel: ProductDetailBindable, cell: ProductListCell) {
         self.disposeBag = DisposeBag()
         
         self.rx.viewWillAppear
             .take(1)
-            .map { _ in viewModel.cell.id }
+            .map { _ in cell.id }
             .filterNil()
             .bind(to: viewModel.viewWillAppear)
             .disposed(by: disposeBag)
@@ -69,19 +68,19 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
             .subscribe { _ in
                 self.view.addSubview(self.thumbnailView)
                 UIView.animate(withDuration: 0.3, animations: {
-                    let x = (self.view.frame.width - viewModel.cell.frame.width) / 2
+                    let x = (self.view.frame.width - cell.frame.width) / 2
                     self.thumbnailView.snp.makeConstraints {
-                        $0.width.equalTo(viewModel.cell.productImageView.bounds.size.width)
-                        $0.height.equalTo(viewModel.cell.productImageView.bounds.size.height)
+                        $0.width.equalTo(cell.productImageView.bounds.size.width)
+                        $0.height.equalTo(cell.productImageView.bounds.size.height)
                         $0.leading.equalToSuperview().inset(x)
                         $0.top.equalToSuperview().inset(x)
                     }
-                    self.thumbnailView.frame = self.thumbnailView.frame.offsetBy(dx: -(viewModel.cell.origin.x - x),
-                                                                                 dy: -(viewModel.cell.origin.y - x))
+                    self.thumbnailView.frame = self.thumbnailView.frame.offsetBy(dx: -(cell.origin.x - x),
+                                                                                 dy: -(cell.origin.y - x))
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         UIView.animate(withDuration: 0.3, animations: {
-                            self.thumbnailView.transform = CGAffineTransform(scaleX: self.view.frame.width/viewModel.cell.frame.width,
-                                                                             y: self.view.frame.width/viewModel.cell.frame.width)
+                            self.thumbnailView.transform = CGAffineTransform(scaleX: self.view.frame.width/cell.frame.width,
+                                                                             y: self.view.frame.width/cell.frame.width)
                         })
                     }
                 }, completion: { _ in
