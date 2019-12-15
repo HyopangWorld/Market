@@ -20,7 +20,7 @@ struct ProductDetailModel {
         return productsNetwork.getProdcut(id: id)
     }
     
-    func pasrseData(value: [Product]) -> DetailData? {
+    func parseData(value: [Product]) -> DetailData? {
         let val = value.first
         return (id: val?.id ?? 0,
         thumbnail_720: val?.thumbnail_720 ?? "",

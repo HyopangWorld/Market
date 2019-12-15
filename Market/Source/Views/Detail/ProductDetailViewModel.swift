@@ -45,7 +45,7 @@ struct ProductDetailViewModel: ProductDetailBindable {
         
         self.productDetailData = Observable
             .merge(productDetailValue)
-            .map(model.pasrseData)
+            .map(model.parseData)
             .filterNil()
             .asSignal(onErrorSignalWith: .empty())
         

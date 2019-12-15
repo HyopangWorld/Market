@@ -20,7 +20,7 @@ struct ProductListModel {
         return productsNetwork.getProdcuts(page: page)
     }
     
-    func pasrseData(value: [Product]) -> [ProductListCell.Data] {
+    func parseData(value: [Product]) -> [ProductListCell.Data] {
         return value.map {
             (id: $0.id ?? 0, thumbnail_520: $0.thumbnail_520 ?? "", title: $0.title ?? "", seller: $0.seller ?? "")
         }

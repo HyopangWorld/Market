@@ -47,7 +47,7 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
         viewModel.reloadList
             .emit(onNext: { [weak self] _ in
                 self?.indicator.snp.updateConstraints {
-                    $0.bottom.equalToSuperview().offset((self?.collectionView.collectionViewLayout.collectionViewContentSize.height ?? 0) - 20)
+                    $0.bottom.equalToSuperview().offset((self?.collectionView.collectionViewLayout.collectionViewContentSize.height ?? 0) - 20) // collection 높이 - 여백
                 }
                 self?.collectionView.reloadData()
             })
@@ -60,12 +60,13 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
         collectionView.rx.contentOffset
             .skipUntil(viewModel.reloadList.asObservable())
             .filter { offset -> Bool in
-                let height = self.collectionView.collectionViewLayout.collectionViewContentSize.height - self.collectionView.frame.height + (MarketUI.safeAreaInsetsTop == 20 ? 0 : MarketUI.safeAreaInsetsTop) // edge가 없으면 0으로 값을 잡는다.
+                let height = self.collectionView.collectionViewLayout.collectionViewContentSize.height - self.collectionView.frame.height
+                    + (MarketUI.safeAreaInsetsTop == 20 ? 0 : MarketUI.safeAreaInsetsTop) // edge가 없으면 0으로 값을 잡는다.
                 return Int(offset.y - height) == 0
             }
             .map{ Int($0.y) }
             .distinct()
-            .delay(RxTimeInterval.seconds(3), scheduler: MainScheduler.instance)
+            .delay(RxTimeInterval.seconds(3), scheduler: MainScheduler.instance) // indicator animation delay
             .map { y -> Int in
                 self.page += 1
                 return self.page
@@ -77,7 +78,8 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
             .subscribe { event in
                 guard let indexpath = event.element else { return }
                 guard let cell = (self.collectionView.cellForItem(at: indexpath) as? ProductListCell) else { return }
-                let x = cell.frame.origin.x + 12
+                
+                let x = cell.frame.origin.x + 12 // collection 옆 margin
                 let y = cell.frame.origin.y + MarketUI.safeAreaInsetsTop - self.collectionView.contentOffset.y
                 cell.origin = CGPoint(x: x, y: y)
                 

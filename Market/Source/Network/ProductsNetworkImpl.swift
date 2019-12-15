@@ -27,7 +27,6 @@ class ProductsNetworkImpl: ProductsNetwork {
             .map { data in
                 do {
                     let response = try JSONDecoder().decode(ProductResponse<[Product]>.self, from: data)
-                    // TODO: response.statusCode 받아서 처리 로직 추가
                     return .success(response.body)
                 } catch {
                     return .failure(.error("getProducts API 에러"))

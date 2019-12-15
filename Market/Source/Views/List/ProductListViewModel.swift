@@ -53,7 +53,7 @@ struct ProductListViewModel: ProductListViewBindable {
             .scan([]){ prev, newList in
                 return newList.isEmpty ? [] : prev + newList
             }
-            .map(model.pasrseData)
+            .map(model.parseData)
             .asDriver(onErrorDriveWith: .empty())
 
         self.reloadList = Observable
