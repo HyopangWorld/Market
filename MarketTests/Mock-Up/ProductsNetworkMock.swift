@@ -26,13 +26,11 @@ struct ProductsNetworkMockUp: ProductsNetwork {
         let data = ProductsDummyData.productJSONString.data(using: .utf8)!
          do {
              let response = try JSONDecoder().decode(ProductResponse<[Product]>.self, from: data)
-             print("\(response)")
              return .just(.success(response.body))
          } catch {
-             return .just(.failure(.error("getProduct API 에러")))
+            return .just(.failure(.error("getProduct API 에러 \(error)")))
          }
     }
-    
 }
 
 

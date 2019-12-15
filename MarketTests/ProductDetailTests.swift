@@ -12,27 +12,27 @@ import XCTest
 
 class ProductDetailTests: XCTestCase {
     let disposeBag = DisposeBag()
-    let networkMock = ProductsNetworkMockUp()
+    let network = ProductsNetworkMockUp()
     var viewModel: ProductDetailViewModel!
     var model: ProductDetailModel!
 
     override func setUp() {
-        self.model = ProductDetailModel(productsNetwork: networkMock)
+        self.model = ProductDetailModel(productsNetwork: network)
         self.viewModel = ProductDetailViewModel(model: model)
     }
 
-    func testProductList() {
+    func testProductDetail() {
         model.getProductDetail(id: 1)
             .subscribe(onNext: { result in
-                let products = try? result.get()
-                assert(products != nil, "Product Detail Getting Success")
+                let product = try? result.get()
+                assert(product != nil, "Product Detail Getting Success")
             })
             .disposed(by: disposeBag)
     }
     
-    func testParseData() {
-        let productsData = ProductsDummyData.productsJSONString.data(using: .utf8)!
-        let product = try! JSONDecoder().decode(ProductResponse<[Product]>.self, from: productsData)
+    func testParseDetail() {
+        let productData = ProductsDummyData.productJSONString.data(using: .utf8)!
+        let product = try! JSONDecoder().decode(ProductResponse<[Product]>.self, from: productData)
         let parsedData = model.parseData(value: [product.body.first!])
         assert(parsedData?.id == 1, "Product Detail ID Parsing Success")
     }

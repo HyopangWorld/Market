@@ -39,7 +39,7 @@ class ProductsNetworkImpl: ProductsNetwork {
             let error = ProductsNetworkError.error("유효하지 않은 URL입니다.")
             return .just(.failure(error))
         }
-        
+
         return session.rx.data(request: URLRequest(url: url))
             .map { data in
                 do {

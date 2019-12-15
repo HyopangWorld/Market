@@ -12,12 +12,12 @@ import XCTest
 
 class ProductListTests: XCTestCase {
     let disposeBag = DisposeBag()
-    let networkMock = ProductsNetworkMockUp()
+    let network = ProductsNetworkMockUp()
     var viewModel: ProductListViewModel!
     var model: ProductListModel!
 
     override func setUp() {
-        self.model = ProductListModel(productsNetwork: networkMock)
+        self.model = ProductListModel(productsNetwork: network)
         self.viewModel = ProductListViewModel(model: model)
     }
 
