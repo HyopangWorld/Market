@@ -17,7 +17,6 @@ typealias DetailData = (id: Int, thumbnail_720: String, thumbnailList: [String],
 protocol ProductDetailBindable {
     var cell: ProductListCell { get }
     var viewWillAppear: PublishRelay<Int> { get }
-    
     var productDetailData: Signal<DetailData> { get }
     var errorMessage: Signal<String> { get }
 }
@@ -313,6 +312,7 @@ extension Reactive where Base: ProductDetailViewController {
         return Binder(base) { base, data in
             base.thumbnailView.kf.setImage(with: URL(string: data.thumbnail_720), placeholder: UIImage(named: "placeholder"))
             base.imageSlider.contentSize = CGSize(width: base.view.frame.width * CGFloat(data.thumbnailList.count), height: base.view.frame.width)
+            base.progressView.setProgress(1.0/Float(data.thumbnailList.count), animated: true)
             for i in 0..<data.thumbnailList.count {
                 let imageView = UIImageView()
                 imageView.kf.setImage(with: URL(string: data.thumbnailList[i]), placeholder: UIImage(named: "placeholder"))
@@ -322,7 +322,6 @@ extension Reactive where Base: ProductDetailViewController {
                     $0.leading.equalTo(base.view.frame.width * CGFloat(i))
                 }
             }
-            base.progressView.setProgress(1.0/Float(data.thumbnailList.count), animated: true)
             
             base.sellerLabel.text = data.seller
             base.titleLabel.text = data.title

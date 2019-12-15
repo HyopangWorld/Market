@@ -17,7 +17,6 @@ import Then
 protocol ProductListViewBindable {
     var viewWillAppear: PublishRelay<Int> { get }
     var viewWillFetch: PublishRelay<Int> { get }
-    
     var cellData: Driver<[ProductListCell.Data]> { get }
     var reloadList: Signal<Void> { get }
     var errorMessage: Signal<String> { get }
@@ -61,10 +60,7 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
         collectionView.rx.contentOffset
             .skipUntil(viewModel.reloadList.asObservable())
             .filter { offset -> Bool in
-                let height = self.collectionView.collectionViewLayout.collectionViewContentSize.height
-                    - self.collectionView.frame.height
-                    + (MarketUI.safeAreaInsetsTop == 20 ? 0 : MarketUI.safeAreaInsetsTop) // edge가 없으면 0으로 값을 잡는다.
-                
+                let height = self.collectionView.collectionViewLayout.collectionViewContentSize.height - self.collectionView.frame.height + (MarketUI.safeAreaInsetsTop == 20 ? 0 : MarketUI.safeAreaInsetsTop) // edge가 없으면 0으로 값을 잡는다.
                 return Int(offset.y - height) == 0
             }
             .map{ Int($0.y) }
@@ -145,7 +141,7 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
             let animationGroup = CAAnimationGroup()
             animationGroup.duration = 1.5
             animationGroup.repeatCount = .infinity
-
+            
             let pulseAnimation = CABasicAnimation(keyPath: "transform.rotation")
             pulseAnimation.toValue = 0.0
             pulseAnimation.fromValue = -Double.pi * 2
@@ -157,9 +153,8 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
             pulseAnimation2.fromValue = -Double.pi * 2
             pulseAnimation2.duration = 0.5
             pulseAnimation2.timingFunction = CAMediaTimingFunction(name: .easeOut)
-
-            animationGroup.animations = [pulseAnimation2, pulseAnimation]
             
+            animationGroup.animations = [pulseAnimation2, pulseAnimation]
             $0.layer.add(animationGroup, forKey: nil)
         }
     }
@@ -167,7 +162,7 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
     override func layout(){
         collectionView.addSubview(indicator)
         view.addSubview(collectionView)
-         
+        
         let collectionHeight = navigationController!.navigationBar.bounds.height + MarketUI.safeAreaInsetsTop
         collectionView.snp.makeConstraints {
             $0.top.equalTo(collectionHeight)

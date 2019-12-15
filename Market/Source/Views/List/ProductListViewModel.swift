@@ -16,7 +16,6 @@ struct ProductListViewModel: ProductListViewBindable {
     
     let viewWillAppear = PublishRelay<Int>()
     let viewWillFetch = PublishRelay<Int>()
-    
     let cellData: Driver<[ProductListCell.Data]>
     let reloadList: Signal<Void>
     let errorMessage: Signal<String>
