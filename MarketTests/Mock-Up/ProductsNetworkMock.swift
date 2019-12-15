@@ -11,8 +11,8 @@ import RxSwift
 
 @testable import Market
 
-struct ProductSNetworkMockUp: ProductsNetwork {
-    func getProdcuts(page: Int) -> Observable<Result<[Product], ProductsNetworkError>> {
+struct ProductsNetworkMockUp: ProductsNetwork {
+    func getProducts(page: Int) -> Observable<Result<[Product], ProductsNetworkError>> {
         let data = ProductsDummyData.productsJSONString.data(using: .utf8)!
          do {
              let response = try JSONDecoder().decode(ProductResponse<[Product]>.self, from: data)
@@ -22,10 +22,11 @@ struct ProductSNetworkMockUp: ProductsNetwork {
          }
     }
     
-    func getProdcut(id: Int) -> Observable<Result<[Product], ProductsNetworkError>> {
+    func getProduct(id: Int) -> Observable<Result<[Product], ProductsNetworkError>> {
         let data = ProductsDummyData.productJSONString.data(using: .utf8)!
          do {
              let response = try JSONDecoder().decode(ProductResponse<[Product]>.self, from: data)
+             print("\(response)")
              return .just(.success(response.body))
          } catch {
              return .just(.failure(.error("getProduct API 에러")))

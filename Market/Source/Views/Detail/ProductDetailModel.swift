@@ -17,7 +17,7 @@ struct ProductDetailModel {
     }
     
     func getProductDetail(id: Int) -> Observable<Result<[Product], ProductsNetworkError>> {
-        return productsNetwork.getProdcut(id: id)
+        return productsNetwork.getProduct(id: id)
     }
     
     func parseData(value: [Product]) -> DetailData? {

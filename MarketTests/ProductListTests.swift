@@ -12,7 +12,7 @@ import XCTest
 
 class ProductListTests: XCTestCase {
     let disposeBag = DisposeBag()
-    let networkMock = ProductSNetworkMockUp()
+    let networkMock = ProductsNetworkMockUp()
     var viewModel: ProductListViewModel!
     var model: ProductListModel!
 

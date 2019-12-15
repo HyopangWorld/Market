@@ -17,7 +17,7 @@ class ProductsNetworkImpl: ProductsNetwork {
         self.session = session
     }
     
-    func getProdcuts(page: Int) -> Observable<Result<[Product], ProductsNetworkError>> {
+    func getProducts(page: Int) -> Observable<Result<[Product], ProductsNetworkError>> {
         guard let url = makeGetProductsComponents(page: page).url else {
             let error = ProductsNetworkError.error("유효하지 않은 URL입니다.")
             return .just(.failure(error))
@@ -34,7 +34,7 @@ class ProductsNetworkImpl: ProductsNetwork {
             }
     }
     
-    func getProdcut(id: Int) -> Observable<Result<[Product], ProductsNetworkError>> {
+    func getProduct(id: Int) -> Observable<Result<[Product], ProductsNetworkError>> {
         guard let url = makeGetProductComponents(id: id).url else {
             let error = ProductsNetworkError.error("유효하지 않은 URL입니다.")
             return .just(.failure(error))

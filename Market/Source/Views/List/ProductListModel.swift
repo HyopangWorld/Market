@@ -17,7 +17,7 @@ struct ProductListModel {
     }
     
     func getProductList(page: Int) -> Observable<Result<[Product], ProductsNetworkError>> {
-        return productsNetwork.getProdcuts(page: page)
+        return productsNetwork.getProducts(page: page)
     }
     
     func parseData(value: [Product]) -> [ProductListCell.Data] {
