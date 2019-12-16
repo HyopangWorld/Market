@@ -25,6 +25,8 @@
 
 ### 설계
 
+
+
 <br>
 
 ### 구현
@@ -33,29 +35,25 @@
 | :------------- | :--------------- |
 | **Views** |
 |       ViewController       |       UIViewController에 bind하기 위한 공통 ViewController        |
-|       ProductListViewController       |               |
-|       ProductListViewModel       |              |
-|       ProductListModel       |               |
-|       ProductDetailViewController       |              |
+|       ProductListViewController       |       viewModel에서 상품 목록 리스트를 받아 collection으로 뿌려준다.        |
+|       ProductListViewModel       |       view로 binding 하는 역할        |
+|       ProductListModel       |       상품 목록 리스트의 비즈니스 로직을 처리하는 부분.        |
+|       ProductDetailViewController       |      viewModel에서 상품 상세 정보를 받아 뿌려준다.        |
 |       ProductDetailViewModel       |               |
-|       ProductDetailModel       |               |
+|       ProductDetailModel       |       상품 상세 정보의 비즈니스 로직을 처리하는 부분.         |
 | **Components** |
-|       ProductListCell       |               |
+|       ProductListCell       |       상품 목록 collection의 cell        |
 | **Models** |
-|       ProductResponse       |               |
-|       Product       |              |
+|       ProductResponse       |       idus API response 공통 모델        |
+|       Product       |       idus API product 모델       |
 | **Constans** |
-|       Constants       |               |
+|       Constants       |       App의 각종 상수        |
 | **Network** |
-|       ProductsNetwork       |               |
-|       ProductsNetworkImpl       |              |
+|       ProductsNetwork       |       API Network protocol        |
+|       ProductsNetworkImpl       |      API Network protocol 구현, API 함수와 URL생성       |
 | **Extension** |
-|       Observable+Distinct       |               |
-|       Reactive+UIViewController       |               |
-
-<br>
-
-### Trouble Shooting
+|       Observable+Distinct       |       직전 이벤트와 값이 다를 때(이전의 이벤트들은 상관없이) 방출하는 filter 메서드 extesion       |
+|       Reactive+UIViewController       |       Toast 라이브러리를 Rx에서 사용하기 위한 extension        |
 
 <br>
 
