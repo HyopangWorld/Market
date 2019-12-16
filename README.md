@@ -2,8 +2,8 @@
 
 상품 정보를 보여주는 Market App
 
-<div><img src="./content/play.gif" style="width:40%; float:left"/>
-<img src="./content/delete.gif" style="width:40%; float:left"/></div>
+<div><img src="./contents/feature_list.gif" style="width:40%; float:left"/>
+<img src="./contents/feature_detail.gif" style="width:40%; float:left"/></div>
 
 <br>
 
@@ -17,8 +17,6 @@
 <br>
 
 ### 설계
-<div><img src="./contents/feature_list.gif" style="width:40%; float:left"/>
-<img src="./contents/feature_detail.gif"  style="width:40%; float:left"/></div>
 
 <br>
 
