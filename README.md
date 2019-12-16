@@ -25,7 +25,7 @@
 
 ### 설계
 
-
+<img src="./contents/architecture.jpeg" width="60%" height="60%" style="float:left"/>
 
 <br>
 
