@@ -36,10 +36,10 @@
 | **Views** |
 |       ViewController       |       UIViewController에 bind하기 위한 공통 ViewController        |
 |       ProductListViewController       |       viewModel에서 상품 목록 리스트를 받아 collection으로 뿌려준다.        |
-|       ProductListViewModel       |       view로 binding 하는 역할        |
+|       ProductListViewModel       |       view로 product list data를 binding 해준다.        |
 |       ProductListModel       |       상품 목록 리스트의 비즈니스 로직을 처리하는 부분.        |
 |       ProductDetailViewController       |      viewModel에서 상품 상세 정보를 받아 뿌려준다.        |
-|       ProductDetailViewModel       |               |
+|       ProductDetailViewModel       |       view로 product detail data를 binding 해준다.        |
 |       ProductDetailModel       |       상품 상세 정보의 비즈니스 로직을 처리하는 부분.         |
 | **Components** |
 |       ProductListCell       |       상품 목록 collection의 cell        |
@@ -67,7 +67,7 @@
 1. 기능 구현 : 구현 기능 - 내용 
 2. 버그 수정 : 수정 기능 변경 전 -> 변경 후
 ```
-
+<br>
 
 ### Style Guide
 
