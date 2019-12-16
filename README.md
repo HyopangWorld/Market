@@ -17,7 +17,8 @@
 <br>
 
 ### 설계
-<img src=""/>
+<div><img src="./contents/feature_list.gif" style="width:40%; float:left"/>
+<img src="./contents/feature_detail.gif"  style="width:40%; float:left"/></div>
 
 <br>
 
@@ -27,70 +28,29 @@
 | :------------- | :--------------- |
 | **Views** |
 |       ViewController       |       UIViewController에 bind하기 위한 공통 ViewController        |
-|       ProductListViewController       |       d        |
-|       ProductListViewModel       |       d       |
-|       ProductListModel       |       d        |
-|       ProductDetailViewController       |      d        |
-|       ProductDetailViewModel       |       d        |
-|       ProductDetailModel       |       d        |
+|       ProductListViewController       |               |
+|       ProductListViewModel       |              |
+|       ProductListModel       |               |
+|       ProductDetailViewController       |              |
+|       ProductDetailViewModel       |               |
+|       ProductDetailModel       |               |
 | **Components** |
-|       ProductListCell       |       d        |
+|       ProductListCell       |               |
 | **Models** |
-|       ProductResponse       |       d        |
-|       Product       |       d       |
+|       ProductResponse       |               |
+|       Product       |              |
 | **Constans** |
-|       Constants       |       d        |
+|       Constants       |               |
 | **Network** |
-|       ProductsNetwork       |       d        |
-|       ProductsNetworkImpl       |       d       |
+|       ProductsNetwork       |               |
+|       ProductsNetworkImpl       |              |
 | **Extension** |
-|       Observable+Distinct       |       d        |
-|       Reactive+UIViewController       |       d        |
+|       Observable+Distinct       |               |
+|       Reactive+UIViewController       |               |
 
 <br>
 
 ### Trouble Shooting
-1. API 호출이 잦아 느려지는 현상
-=> 기존의 가지고 있던 데이터를 VC끼리 공유하여 사용하되, 지역 리스트의 데이터가 변화할 때만 API를 재 호출하여 업데이트한다.
-
-- VC 이동 시 날씨 데이터를 함께 보낸다.
-
-```swift
-let searchVC = segue.destination as! SearchViewController
-for vc in navigationController!.viewControllers {
-if vc is ListViewController {
-// 날씨 데이터 전달 (api 중복 호출 방지)
-searchVC.weatherList = (vc as! ListViewController).weatherList
-}
-}
-```
-- 추가 된 날씨 데이터만 업데이트해 호출한다.
-
-
-```swift
-// 날씨 리스트 업데이트 추가 (api 호출)
-let _ = getWeatherApi([
-"timezone" : selectedCell.timezone!,
-"latitude" : selectedCell.latitude!,
-"logitude" : selectedCell.longitude!])
-```
-<br>
-
-2. 검색할 때 글자 입력할때마다 검색되어 데이터가 엉키는 현상
-=> 입력 1초 후 검색이 되도록 delay를 준다. ( 입력중일 떄는 확인 중이라는 메세지 전달 )
-
-```swift
-// 안내문 출력
-self.matchingItems = []
-notice = "도시 확인 중..."
-self.resultTable.reloadData()
-
-// 이전 perform 삭제
-NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(self.searchResults(_:)), object: nil)
-// 1초 뒤 검색
-self.perform(#selector(self.searchResults(_:)), with: nil, afterDelay: 1.0)
-
-```
 
 <br>
 
