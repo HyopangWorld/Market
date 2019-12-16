@@ -2,8 +2,15 @@
 
 상품 정보를 보여주는 Market App
 
-<div><img src="./contents/feature_list.gif" style="width:350px; float:left"/>
-<img src="./contents/feature_detail.gif" style="width:350px; float:left"/></div>
+1. 상품 목록 화면
+
+<img src="./contents/feature_list.gif" width="35%" height="35%" style="float:left"/>
+
+<br>
+
+2. 상품 상세 화면
+
+<img src="./contents/feature_detail.gif" width="35%" height="35%" style="float:left"/>
 
 <br>
 
