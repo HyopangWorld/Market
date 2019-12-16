@@ -2,8 +2,8 @@
 
 상품 정보를 보여주는 Market App
 
-<div><img src="./contents/feature_list.gif" style="width:40%; float:left"/>
-<img src="./contents/feature_detail.gif" style="width:40%; float:left"/></div>
+<div><img src="./contents/feature_list.gif" style="width:350px; float:left"/>
+<img src="./contents/feature_detail.gif" style="width:350px; float:left"/></div>
 
 <br>
 
