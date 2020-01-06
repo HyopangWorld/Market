@@ -66,38 +66,36 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
             })
             .disposed(by: disposeBag)
         
-        viewModel.productDetailData.asObservable()
+        let detailData = viewModel.productDetailData.asObservable().share()
+        detailData
+            .subscribeOn(MainScheduler.instance)
             .subscribe { [weak self] _ in
                 guard let _self = self else { return }
                 guard let cell = _self.cell else { return }
                 
                 _self.view.addSubview(_self.thumbnailView)
-                UIView.animate(withDuration: 0.3, animations: {
-                    let x = (_self.view.frame.width - cell.frame.width) / 2
-                    _self.thumbnailView.snp.makeConstraints {
-                        $0.width.equalTo(cell.productImageView.bounds.size.width)
-                        $0.height.equalTo(cell.productImageView.bounds.size.height)
-                        $0.leading.equalToSuperview().inset(x)
-                        $0.top.equalToSuperview().inset(x)
-                    }
-                    _self.thumbnailView.frame = _self.thumbnailView.frame.offsetBy(dx: -(cell.origin.x - x),
-                                                                                 dy: -(cell.origin.y - x))
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        UIView.animate(withDuration: 0.3, animations: {
-                            _self.thumbnailView.transform = CGAffineTransform(scaleX: _self.view.frame.width/cell.frame.width,
-                                                                             y: _self.view.frame.width/cell.frame.width)
-                        })
-                    }
+                let x = (_self.view.frame.width - cell.frame.width) / 2
+                _self.thumbnailView.snp.makeConstraints {
+                    $0.width.equalTo(cell.productImageView.bounds.size.width)
+                    $0.height.equalTo(cell.productImageView.bounds.size.height)
+                    $0.leading.equalToSuperview().inset(x)
+                    $0.top.equalToSuperview().inset(x)
+                }
+                
+                UIView.animate(withDuration: 0.4, animations: {
+                    _self.thumbnailView.frame = _self.thumbnailView.frame.offsetBy(dx: -(cell.origin.x - x), dy: -(cell.origin.y - x))
+                    UIView.animate(withDuration: 0.3, delay: 0.1, animations: {
+                        _self.thumbnailView.transform = CGAffineTransform(scaleX: _self.view.frame.width/cell.frame.width, y: _self.view.frame.width/cell.frame.width)
+                    })
                 }, completion: { _ in
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        _self.layout()
-                    }
+                    _self.layout()
                 })
         }
         .disposed(by: disposeBag)
         
-        viewModel.productDetailData.asObservable()
+        detailData
             .delay(RxTimeInterval.milliseconds(1500), scheduler: MainScheduler.instance)
+            .subscribeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
                 guard let _self = self else { return }
                 UIView.animate(withDuration: 0.7, animations: {
