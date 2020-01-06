@@ -36,16 +36,18 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
     let noticeView = UIView()
     let buyButton = UIButton()
     
+    var cell: ProductListCell? = nil
+    
     override func viewDidLoad() {
         attribute()
     }
     
-    func bind(_ viewModel: ProductDetailBindable, cell: ProductListCell) {
+    override func bind(_ viewModel: ProductDetailBindable) {
         self.disposeBag = DisposeBag()
         
         self.rx.viewWillAppear
             .take(1)
-            .map { _ in cell.id }
+            .map { [weak self] _ in self?.cell?.id }
             .filterNil()
             .bind(to: viewModel.viewWillAppear)
             .disposed(by: disposeBag)
@@ -67,6 +69,8 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
         viewModel.productDetailData.asObservable()
             .subscribe { [weak self] _ in
                 guard let _self = self else { return }
+                guard let cell = _self.cell else { return }
+                
                 _self.view.addSubview(_self.thumbnailView)
                 UIView.animate(withDuration: 0.3, animations: {
                     let x = (_self.view.frame.width - cell.frame.width) / 2
@@ -305,6 +309,12 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
             $0.leading.trailing.equalToSuperview().inset(33)
             $0.height.equalTo(52)
         }
+    }
+
+    deinit {
+        #if debug
+        print("ProductDetailViewController 메모리 완전해제")
+        #endif
     }
 }
 

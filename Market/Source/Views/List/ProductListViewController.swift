@@ -88,7 +88,8 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
                 
                 let detailViewController = ProductDetailViewController()
                 let detailViewModel = ProductDetailViewModel()
-                detailViewController.bind(detailViewModel, cell: cell)
+                detailViewController.bind(detailViewModel)
+                detailViewController.cell = cell
                 
                 _self.present(detailViewController, animated: false, completion: nil)
             }
@@ -181,5 +182,11 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
             $0.centerX.equalToSuperview()
             $0.width.height.equalTo(23)
         }
+    }
+
+    deinit {
+        #if debug
+        print("ProductListViewController 메모리 완전해제")
+        #endif
     }
 }

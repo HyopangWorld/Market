@@ -12,7 +12,7 @@ extension Observable where Element: Hashable {
    func distinct() -> Observable<Element> {
       var set = Set<Element>()
       return flatMap { element -> Observable<Element> in
-         objc_sync_enter(self); defer {objc_sync_exit(self)}
+        objc_sync_enter(self); defer {objc_sync_exit(self)}
          if set.contains(element) {
             return Observable<Element>.empty()
          } else {
