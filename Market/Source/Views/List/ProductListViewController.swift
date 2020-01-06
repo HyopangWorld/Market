@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 import RxAppState
 import RxDataSources
+import RxOptional
 import SnapKit
 import Then
 
@@ -59,35 +60,37 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
         
         collectionView.rx.contentOffset
             .skipUntil(viewModel.reloadList.asObservable())
-            .filter { offset -> Bool in
-                let height = self.collectionView.collectionViewLayout.collectionViewContentSize.height - self.collectionView.frame.height
+            .filter { [weak self] offset -> Bool in
+                let height = (self?.collectionView.collectionViewLayout.collectionViewContentSize.height ?? 0) - (self?.collectionView.frame.height ?? 0)
                     + (MarketUI.safeAreaInsetsTop == 20 ? 0 : MarketUI.safeAreaInsetsTop) // edge가 없으면 0으로 값을 잡는다.
                 return Int(offset.y - height) == 0
             }
             .map{ Int($0.y) }
             .distinct()
             .delay(RxTimeInterval.seconds(3), scheduler: MainScheduler.instance) // indicator animation delay
-            .map { y -> Int in
-                self.page += 1
-                return self.page
+            .map { [weak self] y -> Int? in
+                self?.page += 1
+                return self?.page
             }
+            .filterNil()
             .bind(to: viewModel.viewWillFetch)
             .disposed(by: disposeBag)
         
         collectionView.rx.itemSelected
-            .subscribe { event in
+            .subscribe { [weak self] event in
+                guard let _self = self else { return }
                 guard let indexpath = event.element else { return }
-                guard let cell = (self.collectionView.cellForItem(at: indexpath) as? ProductListCell) else { return }
+                guard let cell = (_self.collectionView.cellForItem(at: indexpath) as? ProductListCell) else { return }
                 
                 let x = cell.frame.origin.x + 12 // collection 옆 margin
-                let y = cell.frame.origin.y + MarketUI.safeAreaInsetsTop - self.collectionView.contentOffset.y
+                let y = cell.frame.origin.y + MarketUI.safeAreaInsetsTop - _self.collectionView.contentOffset.y
                 cell.origin = CGPoint(x: x, y: y)
                 
                 let detailViewController = ProductDetailViewController()
                 let detailViewModel = ProductDetailViewModel()
                 detailViewController.bind(detailViewModel, cell: cell)
                 
-                self.present(detailViewController, animated: false, completion: nil)
+                _self.present(detailViewController, animated: false, completion: nil)
             }
             .disposed(by: disposeBag)
     }
@@ -96,7 +99,7 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
         view.backgroundColor = .white
         
         let gradient = CAGradientLayer()
-        gradient.frame = CGRect(x: 0, y: navigationController!.navigationBar.frame.height, width: view.frame.width, height: 5)
+        gradient.frame = CGRect(x: 0, y: navigationController?.navigationBar.frame.height ?? 0, width: view.frame.width, height: 5)
         gradient.colors = [
             UIColor(displayP3Red: CGFloat(24/255), green: CGFloat(24/255), blue: CGFloat(80/255), alpha: 0.12).cgColor,
             UIColor.white
@@ -165,7 +168,7 @@ class ProductListViewController: ViewController<ProductListViewBindable> {
         collectionView.addSubview(indicator)
         view.addSubview(collectionView)
         
-        let collectionHeight = navigationController!.navigationBar.bounds.height + MarketUI.safeAreaInsetsTop
+        let collectionHeight = (navigationController?.navigationBar.bounds.height ?? 0) + MarketUI.safeAreaInsetsTop
         collectionView.snp.makeConstraints {
             $0.top.equalTo(collectionHeight)
             $0.leading.equalToSuperview().offset(12)

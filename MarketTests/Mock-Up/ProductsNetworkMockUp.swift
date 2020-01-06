@@ -13,7 +13,10 @@ import RxSwift
 
 struct ProductsNetworkMockUp: ProductsNetwork {
     func getProducts(page: Int) -> Observable<Result<[Product], ProductsNetworkError>> {
-        let data = ProductsDummyData.productsJSONString.data(using: .utf8)!
+        guard let data = ProductsDummyData.productsJSONString.data(using: .utf8) else {
+            return .just(.failure(.error("Dummy Data 에러")))
+        }
+        
          do {
              let response = try JSONDecoder().decode(ProductResponse<[Product]>.self, from: data)
              return .just(.success(response.body))
@@ -23,7 +26,10 @@ struct ProductsNetworkMockUp: ProductsNetwork {
     }
     
     func getProduct(id: Int) -> Observable<Result<[Product], ProductsNetworkError>> {
-        let data = ProductsDummyData.productJSONString.data(using: .utf8)!
+        let data = ProductsDummyData.productJSONString.data(using: .utf8) else {
+                   return .just(.failure(.error("Dummy Data 에러")))
+        }
+        
          do {
              let response = try JSONDecoder().decode(ProductResponse<[Product]>.self, from: data)
              return .just(.success(response.body))

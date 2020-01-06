@@ -59,33 +59,34 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
             .disposed(by: disposeBag)
         
         closeButton.rx.controlEvent(.touchUpInside)
-            .subscribe(onNext: {
-                self.dismiss(animated: true, completion: nil)
+            .subscribe(onNext: { [weak self] _ in
+                self?.dismiss(animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
         
         viewModel.productDetailData.asObservable()
-            .subscribe { _ in
-                self.view.addSubview(self.thumbnailView)
+            .subscribe { [weak self] _ in
+                guard let _self = self else { return }
+                _self.view.addSubview(_self.thumbnailView)
                 UIView.animate(withDuration: 0.3, animations: {
-                    let x = (self.view.frame.width - cell.frame.width) / 2
-                    self.thumbnailView.snp.makeConstraints {
+                    let x = (_self.view.frame.width - cell.frame.width) / 2
+                    _self.thumbnailView.snp.makeConstraints {
                         $0.width.equalTo(cell.productImageView.bounds.size.width)
                         $0.height.equalTo(cell.productImageView.bounds.size.height)
                         $0.leading.equalToSuperview().inset(x)
                         $0.top.equalToSuperview().inset(x)
                     }
-                    self.thumbnailView.frame = self.thumbnailView.frame.offsetBy(dx: -(cell.origin.x - x),
+                    _self.thumbnailView.frame = _self.thumbnailView.frame.offsetBy(dx: -(cell.origin.x - x),
                                                                                  dy: -(cell.origin.y - x))
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         UIView.animate(withDuration: 0.3, animations: {
-                            self.thumbnailView.transform = CGAffineTransform(scaleX: self.view.frame.width/cell.frame.width,
-                                                                             y: self.view.frame.width/cell.frame.width)
+                            _self.thumbnailView.transform = CGAffineTransform(scaleX: _self.view.frame.width/cell.frame.width,
+                                                                             y: _self.view.frame.width/cell.frame.width)
                         })
                     }
                 }, completion: { _ in
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        self.layout()
+                        _self.layout()
                     }
                 })
         }
@@ -93,18 +94,19 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
         
         viewModel.productDetailData.asObservable()
             .delay(RxTimeInterval.milliseconds(1500), scheduler: MainScheduler.instance)
-            .subscribe(onNext: { _ in
+            .subscribe(onNext: { [weak self] _ in
+                guard let _self = self else { return }
                 UIView.animate(withDuration: 0.7, animations: {
-                    self.buyButton.frame = self.buyButton.frame.offsetBy(dx: 0, dy: -85)
+                    _self.buyButton.frame = _self.buyButton.frame.offsetBy(dx: 0, dy: -85)
                 }, completion: { (_) in
                     UIView.animate(withDuration: 0.3, animations: {
-                        self.buyButton.frame = self.buyButton.frame.offsetBy(dx: 0, dy: 3)
+                        _self.buyButton.frame = _self.buyButton.frame.offsetBy(dx: 0, dy: 3)
                     }, completion: { (_) in
                         UIView.animate(withDuration: 0.4, animations: {
-                            self.buyButton.frame = self.buyButton.frame.offsetBy(dx: 0, dy: -5)
+                            _self.buyButton.frame = _self.buyButton.frame.offsetBy(dx: 0, dy: -5)
                         }, completion: { (_) in
                             UIView.animate(withDuration: 0.3, animations: {
-                                self.buyButton.frame = self.buyButton.frame.offsetBy(dx: 0, dy: 3)
+                                _self.buyButton.frame = _self.buyButton.frame.offsetBy(dx: 0, dy: 3)
                             })
                         })
                     })
@@ -113,10 +115,10 @@ class ProductDetailViewController: ViewController<ProductDetailBindable> {
             .disposed(by: disposeBag)
         
         imageSlider.rx.contentOffset
-            .map { $0.x / self.imageSlider.frame.width }
-            .subscribe {
-                let value = Float($0.element! + 1) / Float(self.imageSlider.subviews.filter{ $0 is UIImageView }.count)
-                self.progressView.setProgress(value, animated: true)
+            .map { [weak self] in $0.x / (self?.imageSlider.frame.width ?? 0) }
+            .subscribe { [weak self] in
+                let value = Float(($0.element ?? 0) + 1) / Float(self?.imageSlider.subviews.filter{ $0 is UIImageView }.count ?? 0)
+                self?.progressView.setProgress(value, animated: true)
             }
             .disposed(by: disposeBag)
     }

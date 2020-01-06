@@ -31,9 +31,10 @@ class ProductListTests: XCTestCase {
     }
     
     func testParseData() {
-        let productsData = ProductsDummyData.productsJSONString.data(using: .utf8)!
-        let product = try! JSONDecoder().decode(ProductResponse<[Product]>.self, from: productsData)
-        let parsedData = model.parseData(value: [product.body.first!])
+        guard let productsData = ProductsDummyData.productsJSONString.data(using: .utf8) else { return }
+        guard let product = try? JSONDecoder().decode(ProductResponse<[Product]>.self, from: productsData) else { return }
+        guard let data = product.body.first else { return }
+        let parsedData = model.parseData(value: [data])
         assert(parsedData.first?.id == 1, "Product List ID Parsing Success")
     }
 }
